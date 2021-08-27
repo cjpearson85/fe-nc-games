@@ -1,10 +1,15 @@
 import axios from "axios";
 
-// const gamesApi = axios.create({
-//   baseURL: "https://nc-games-chris.herokuapp.com/api",
-// });
+const gamesApi = axios.create({
+  baseURL: "https://nc-games-chris.herokuapp.com/api",
+});
 
-export const getReviews = async () => {
-  const {data} = await axios.get("https://nc-games-chris.herokuapp.com/api/reviews");
+export const getReviews = async (category) => {
+  const { data } = await gamesApi.get("/reviews", { params: { category } });
   return data.reviews;
+};
+
+export const getCategories = async () => {
+  const { data } = await gamesApi.get("/categories");
+  return data.categories;
 };
