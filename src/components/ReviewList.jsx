@@ -1,23 +1,27 @@
 import { useEffect, useState } from "react";
 import { getCategories, getReviews } from "../api";
-import { Link, useParams, useHistory } from "react-router-dom";
+import { Link, useParams, useHistory, useLocation, generatePath } from "react-router-dom";
 
 const ReviewList = () => {
   const [reviews, setReviews] = useState([]);
   const [categories, setCategories] = useState([]);
+//   const [queries, setQueries] = useState(useQuery());
+  const [order, setOrder] = useState();
   const { category } = useParams();
   const history = useHistory();
 
-  const routeChange = () => {
-    const selectBox = document.getElementById("category_dropdown");
-    const selectedValue = selectBox.options[selectBox.selectedIndex].value;
-    let path
+  //   let order = queries.get("order");
+  //   console.log(order, '<<< reviewList');
 
-    if (selectedValue === "") {
-      path = `/`;
+  const routeChange = ({ value }) => {
+    let path;
+
+    if (Object.is(parseInt(value), NaN)) {
+        value === "All" ? (path = `/`) : (path = generatePath("/reviews/:category", {category: value}));
     } else {
-      path = `/reviews/${selectedValue}`;
+        path = generatePath("/reviews/:review_id", {review_id: value});
     }
+
     history.push(path);
   };
 
@@ -28,21 +32,17 @@ const ReviewList = () => {
   }, []);
 
   useEffect(() => {
-    getReviews(category).then((reviews) => {
+    getReviews(category, order).then((reviews) => {
       setReviews(reviews);
     });
-  }, [category]);
+  }, [category, order]);
 
   return (
     <div className="ReviewList">
-      <h2>{!category ? 'All' : prettifyText(category)} reviews</h2>
+      <h2>{!category ? "All" : prettifyText(category)} reviews</h2>
       <label>
-        <select
-          id="category_dropdown"
-          defaultValue=""
-          onChange={() => routeChange()}
-        >
-          <option value="">All</option>
+        <select onChange={({ target }) => routeChange(target)}>
+          <option value="All">All</option>
           {categories.map(({ slug }) => {
             return (
               <option key={slug} value={slug}>
@@ -52,16 +52,31 @@ const ReviewList = () => {
           })}
         </select>
       </label>
+      <button
+        onClick={({ target: { value } }) => {
+          //   queries.set("order", value);
+          //   setQueries(queries);
+          setOrder(value);
+        }}
+        // value="asc"
+        value={order === "asc" ? "desc" : "asc"}
+      >
+        {/* asc */}
+        {order === "asc" ? "Desc" : "Asc"}
+      </button>
       <ul>
-        {reviews.map(({ review_id, title, owner, category }) => {
-          return (
-            <li key={review_id} className="review_card">
-              <h2>{title}</h2>
-              <p>by {owner}</p>
-              <p>{category}</p>
-            </li>
-          );
-        })}
+        {reviews.map(
+          ({ review_id, title, owner, category, review_img_url }) => {
+            return (
+              <li key={review_id} className="review_card" onClick={() => routeChange({value: review_id})}>
+                <img src={review_img_url} />
+                <h2>{title}</h2>
+                <p>by {owner}</p>
+                <p>{category}</p>
+              </li>
+            );
+          }
+        )}
       </ul>
     </div>
   );
@@ -70,5 +85,9 @@ const ReviewList = () => {
 export default ReviewList;
 
 function prettifyText(str) {
-    return str[0].toUpperCase() + str.slice(1).replace(/-/g, ' ')
+  return str[0].toUpperCase() + str.slice(1).replace(/-/g, " ");
+}
+
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
 }
