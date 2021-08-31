@@ -4,36 +4,67 @@
   background-color: whitesmoke;
 }
 
-/* .Nav {
+.Sidebar {
+  width: 50vw;
+  height: 92vh;
   position: fixed;
+  top: 8vh;
   z-index: 1;
   background-color: #eb1b24;
   color: whitesmoke;
-  height: 8vh;
-  width: 100%;
-  box-shadow: 0px -20px 10px 20px black;
-} */
+}
+
+.Sidebar > ul {
+  display: block;
+}
+
+h3 > img {
+    height: 3rem;
+    width: 3rem;
+    border-radius: 50%;
+}
 
 .ReviewList {
-  border: 2px solid blue;
+  /* border: 2px solid blue; */
   margin: auto;
   position: absolute;
   top: 8vh;
   background-color: whitesmoke;
 }
 
-.review_card {
-  margin-bottom: 5vw;
-  width: 90vw;
-  border: 2px solid blue;
-  text-align: center;
+.FullReview {
+  position: absolute;
+  top: 8vh;
+  background-color: whitesmoke;
 }
 
-/* h1 {
-  padding-top: 1vh;
-  padding-left: 2vw;
-  margin: 0;
-} */
+.FullReview > img {
+  width: 100vw;
+  height: auto;
+}
+
+.review_body {
+  width: 90%;
+  margin: auto;
+}
+
+.Login {
+  position: absolute;
+  top: 8vh;
+  background-color: whitesmoke;
+}
+
+.Register {
+  position: absolute;
+  top: 8vh;
+  background-color: whitesmoke;
+}
+
+.UserProfile {
+  position: absolute;
+  top: 8vh;
+  background-color: whitesmoke;
+}
 
 ul {
   padding-left: 0;
@@ -41,4 +72,25 @@ ul {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+}
+
+.review_card {
+  padding: 0.5rem;
+  margin-bottom: 5vw;
+  width: 100%;
+  background-color: rgb(202, 216, 230);
+  /* border: 2px solid blue; */
+  text-align: center;
+}
+
+.review_card > img {
+  width: 100px;
+}
+
+.error {
+  color: red;
+}
+
+.hidden {
+  display: none;
 }
