@@ -161,6 +161,15 @@ ul {
   margin: 0.5rem;
 }
 
+.LikeButton {
+  background-color: transparent;
+  border: none;
+}
+
+.LikeButton:disabled {
+  color: initial;
+}
+
 .error {
   color: red;
 }

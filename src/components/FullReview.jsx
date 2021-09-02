@@ -3,11 +3,12 @@ import { useParams } from "react-router-dom";
 import {
   getComments,
   getReviewById,
-  patchCommentById,
-  patchReviewById,
+  // patchCommentById,
+  // patchReviewById,
   postCommentToReview,
 } from "../api";
 import { getTimeSince } from "../utils/helper-functions";
+import LikeButton from "./LikeButton";
 
 const FullReview = ({ loggedInAs: { username } }) => {
   const [review, setReview] = useState({});
@@ -43,47 +44,47 @@ const FullReview = ({ loggedInAs: { username } }) => {
     });
   };
 
-  const updateReviewLikes = () => {
-    setReview((curr) => {
-      const updatedReview = { ...curr };
-      updatedReview.votes++;
-      return updatedReview;
-    });
-    patchReviewById(review_id, 1).catch(() => {
-      setReview((curr) => {
-        const updatedReview = { ...curr };
-        updatedReview.votes--;
-        return updatedReview;
-      });
-    });
-  };
+  // const updateReviewLikes = () => {
+  //   setReview((curr) => {
+  //     const updatedReview = { ...curr };
+  //     updatedReview.votes++;
+  //     return updatedReview;
+  //   });
+  //   patchReviewById(review_id, 1).catch(() => {
+  //     setReview((curr) => {
+  //       const updatedReview = { ...curr };
+  //       updatedReview.votes--;
+  //       return updatedReview;
+  //     });
+  //   });
+  // };
 
-  const updateCommentLikes = (comment_id) => {
-    setComments((currentComments) => {
-      return currentComments.map((comment) => {
-        if (comment.comment_id === comment_id) {
-          const updatedComment = { ...comment };
-          updatedComment.votes++;
-          return updatedComment;
-        } else {
-          return comment;
-        }
-      });
-    });
-    patchCommentById(comment_id, 1).catch(() => {
-      setComments((currentComments) => {
-        return currentComments.map((comment) => {
-          if (comment.comment_id === comment_id) {
-            const updatedComment = { ...comment };
-            updatedComment.votes--;
-            return updatedComment;
-          } else {
-            return comment;
-          }
-        });
-      });
-    });
-  };
+  // const updateCommentLikes = (comment_id) => {
+  //   setComments((currentComments) => {
+  //     return currentComments.map((comment) => {
+  //       if (comment.comment_id === comment_id) {
+  //         const updatedComment = { ...comment };
+  //         updatedComment.votes++;
+  //         return updatedComment;
+  //       } else {
+  //         return comment;
+  //       }
+  //     });
+  //   });
+  //   patchCommentById(comment_id, 1).catch(() => {
+  //     setComments((currentComments) => {
+  //       return currentComments.map((comment) => {
+  //         if (comment.comment_id === comment_id) {
+  //           const updatedComment = { ...comment };
+  //           updatedComment.votes--;
+  //           return updatedComment;
+  //         } else {
+  //           return comment;
+  //         }
+  //       });
+  //     });
+  //   });
+  // };
 
   const toggleComments = () => {
     setCommentsOpen((currStatus) => !currStatus);
@@ -99,7 +100,8 @@ const FullReview = ({ loggedInAs: { username } }) => {
         <p>by {review.owner}</p>
         <p>{review.review_body}</p>
         <h4>
-          {review.votes} likes <button onClick={updateReviewLikes}>❤️</button>
+          {review.votes} likes <LikeButton setReview={setReview} review_id={review_id} />
+          {/* <button onClick={updateReviewLikes}>❤️</button> */}
         </h4>
         <h4>Comments ({comments.length})</h4>
         {review.comment_count === "0" ? null : (
@@ -118,9 +120,10 @@ const FullReview = ({ loggedInAs: { username } }) => {
                       <p>posted {getTimeSince(created_at)}</p>
                       <h5>
                         {votes} likes{" "}
-                        <button onClick={() => updateCommentLikes(comment_id)}>
+                        <LikeButton setComments={setComments} comment_id={comment_id} />
+                        {/* <button onClick={() => updateCommentLikes(comment_id)}>
                           ❤️
-                        </button>
+                        </button> */}
                       </h5>
                       <p>{body}</p>
                     </li>
