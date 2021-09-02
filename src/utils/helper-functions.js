@@ -26,3 +26,15 @@ export const getTimeSince = (dateStr) => {
     return years === 1 ? "1 year ago" : `${years} years ago`;
   }
 };
+
+export const prettifyText = (str) => {
+  return str[0].toUpperCase() + str.slice(1).replace(/-/g, " ");
+};
+
+export const createRef = (arr, key, val) => {
+  const refObj = {};
+  arr.forEach((el) => {
+    refObj[el[key]] = el[val];
+  });
+  return refObj;
+};
