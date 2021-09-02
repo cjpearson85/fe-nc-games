@@ -24,7 +24,7 @@ h3 > img {
     border-radius: 50%;
 }
 
-.ReviewList {
+.ReviewList, .UsersList {
   /* border: 2px solid blue; */
   margin: auto;
   position: absolute;
@@ -32,7 +32,7 @@ h3 > img {
   background-color: whitesmoke;
 }
 
-.FullReview {
+.FullReview, .loading {
   position: absolute;
   top: 8vh;
   background-color: whitesmoke;
@@ -77,14 +77,88 @@ ul {
 .review_card {
   padding: 0.5rem;
   margin-bottom: 5vw;
-  width: 100%;
-  background-color: rgb(202, 216, 230);
+  width: 90%;
+  background-color: rgb(228, 231, 235);
   /* border: 2px solid blue; */
-  text-align: center;
+  /* text-align: center; */
+  display: grid;
+  grid-template-columns: 30vw auto;
+  grid-template-rows: 30vw auto;
+  box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.171);
+}
+
+.title_category {
+  padding-left: 0.5rem;
+}
+
+.title_category > h3 {
+  margin: 0;
+}
+
+.category_tag {
+  display: inline-block;
+  color: white;
+  background-color: #eb1b24;
+  margin: 0;
+  padding:0.25rem;
+  border-radius: 0.2rem;
+  font-size: 0.9rem;
+}
+
+.votes_comments_count {
+  justify-self: right;
+}
+
+.votes_comments_count > p {
+  display: inline-block;
+  margin-right: 1rem; 
 }
 
 .review_card > img {
-  width: 100px;
+  vertical-align: middle;
+  width: 100%;
+  max-height: 30vw;
+  object-fit: contain;
+}
+
+.comments {
+  justify-content: left;
+}
+
+.comment-card {
+  min-width: 60vw;
+}
+
+.profile__card {
+  padding: 0.5rem;
+  margin: auto;
+  margin-bottom: 5vw;
+  width: 90vw;
+  height: auto;
+  background-color: rgb(228, 231, 235);
+  /* border: 2px solid blue; */
+  /* text-align: center; */
+  display: grid;
+  grid-template-columns: 30vw auto;
+  box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.171);
+}
+
+.profile__img {
+  object-fit: contain;
+  overflow: hidden;
+  width: 7rem;
+  height: 7rem;
+  border-radius: 50%;
+  border: 2px solid black;
+  background-color: white;
+}
+
+.profile__info {
+  margin-left: 1rem;
+}
+
+.profile__info > h4 {
+  margin: 0.5rem;
 }
 
 .error {

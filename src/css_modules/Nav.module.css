@@ -1,6 +1,6 @@
 nav {
   position: fixed;
-  z-index: 1;
+  z-index: 2;
   background-color: #eb1b24;
   color: whitesmoke;
   height: 8vh;
@@ -9,7 +9,17 @@ nav {
 }
 
 h1 {
+  display: inline-block;
   padding-top: 1.8vh;
   padding-left: 4vw;
   margin: 0;
+}
+
+.burger_icon {
+  text-align: center;
+  width: 28px;
+  height: auto;
+  margin: 8px;
+  padding: 0.2rem;
+  float: right;
 }
