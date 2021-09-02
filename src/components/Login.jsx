@@ -4,14 +4,19 @@ import { getUserByUsername } from "../api";
 
 const Login = ({ setLoggedInAs }) => {
   const [usernameInput, setUsernameInput] = useState("");
+  const [userNotFound, setUserNotFound] = useState(false);
   const history = useHistory();
 
   const checkUsername = (event) => {
     event.preventDefault();
-    getUserByUsername(usernameInput).then((user) => {
-      setLoggedInAs(user);
-      history.push("/profile");
-    });
+    getUserByUsername(usernameInput)
+      .then((user) => {
+        setLoggedInAs(user);
+        history.push("/profile");
+      })
+      .catch(() => {
+        setUserNotFound(true);
+      });
   };
 
   return (
@@ -26,9 +31,12 @@ const Login = ({ setLoggedInAs }) => {
           />
         </label>
         <button type="submit">Submit</button>
-        <p className="error hidden">User not found</p>
+        {userNotFound ? <p className="error">User not found</p> : null}
       </form>
-      <p>Don't have an account? Click here to <Link to="/register">register</Link>.</p>
+      <p>
+        Don't have an account? Click here to{" "}
+        <Link to="/register">register</Link>.
+      </p>
     </div>
   );
 };

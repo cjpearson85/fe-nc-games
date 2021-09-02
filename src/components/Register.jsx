@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { getUserByUsername } from "../api";
+import { useHistory } from "react-router-dom";
+import { getUserByUsername, postUser } from "../api";
 
-const Register = () => {
+const Register = ({setLoggedInAs}) => {
   const [usernameInput, setUsernameInput] = useState("");
   const [usernameValid, setUsernameValid] = useState();
   const [usernameAvailable, setUsernameAvailable] = useState(false);
@@ -11,7 +12,8 @@ const Register = () => {
   const [errorMsg, setErrorMsg] = useState("");
 
   const [nameInput, setNameInput] = useState("");
-  const [avatarInput, setAvatarInput] = useState("");
+  const [avatarInput, setAvatarInput] = useState();
+  const history = useHistory();
 
   const checkUsername = () => {
     if (!/^[a-z0-9_]{5,20}$/.test(usernameInput)) {
@@ -30,16 +32,25 @@ const Register = () => {
     }
   };
 
+  const createAccount = (event) => {
+      event.preventDefault();
+      postUser({username: usernameInput, name: nameInput, avatar_url: avatarInput}).then((user) => {
+        setLoggedInAs(user);
+        history.push("/profile");
+      })
+  }
+
   return (
     <div className="Register">
       <h2>Register account</h2>
-      <form>
+      <form onSubmit={(event) => createAccount(event)}>
         <label>
           Username:{" "}
           <input
             type="text"
             onChange={({ target: { value } }) => setUsernameInput(value)}
             onBlur={checkUsername}
+            required
           />
           {usernameInput === ""
             ? null
@@ -53,18 +64,18 @@ const Register = () => {
           <input
             type="text"
             onChange={({ target: { value } }) => setNameInput(value)}
+            required
           />
         </label>
         <br />
         <label>
           Avatar:{" "}
           <input
-            type="text"
+            type="url"
             onChange={({ target: { value } }) => setAvatarInput(value)}
           />
         </label>
         <button type="submit">Create account</button>
-        <p className="error hidden">User not found</p>
       </form>
     </div>
   );

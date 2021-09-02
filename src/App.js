@@ -8,8 +8,15 @@ import Register from "./components/Register";
 import ReviewList from "./components/ReviewList";
 import Sidebar from "./components/Sidebar";
 import UserProfile from "./components/UserProfile";
+import UsersList from "./components/UsersList";
 
 function App() {
+  // const [loggedInAs, setLoggedInAs] = useState({
+  //   username: 'jessjelly',
+  //   name: 'Jess Jelly',
+  //   avatar_url:
+  //     'https://s-media-cache-ak0.pinimg.com/564x/39/62/ec/3962eca164e60cf46f979c1f57d4078b.jpg'
+  // });
   const [loggedInAs, setLoggedInAs] = useState({});
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { pathname } = useLocation();
@@ -30,7 +37,10 @@ function App() {
           <Register setLoggedInAs={setLoggedInAs} />
         </Route>
         <Route exact path="/profile">
-          <UserProfile user={loggedInAs}/>
+          <UserProfile user={loggedInAs} setLoggedInAs={setLoggedInAs}/>
+        </Route>
+        <Route exact path="/users">
+          <UsersList />
         </Route>
         {Object.is(parseInt(param), NaN) ? (
           <Route exact path="/reviews/:category">
@@ -38,7 +48,7 @@ function App() {
           </Route>
         ) : (
           <Route exact path="/reviews/:review_id">
-            <FullReview />
+            <FullReview loggedInAs={loggedInAs}/>
           </Route>
         )}
       </Switch>

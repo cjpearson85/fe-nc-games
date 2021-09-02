@@ -21,9 +21,12 @@ const Sidebar = ({ loggedInAs: { name, avatar_url }, setLoggedInAs }) => {
           {!name ? (
             <Link to="/login">Log In</Link>
           ) : (
-            <p onClick={() => setLoggedInAs({})}>Log Out</p>
+            <Link to="/">
+                <p onClick={() => setLoggedInAs({})}>Log Out</p>
+            </Link>
           )}
         </li>
+        <li><Link to="/users">Users</Link></li>
         {!name ? null : <li>Profile</li>}
         <li>Dark mode</li>
       </ul>

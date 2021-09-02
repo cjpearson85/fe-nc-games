@@ -4,13 +4,17 @@ const gamesApi = axios.create({
   baseURL: "https://nc-games-chris.herokuapp.com/api",
 });
 
-export const getReviews = async (category, order) => {
-  //   let order = queries.get("order");
-  //   console.log(order, "<<< api");
+export const getReviews = async ({
+  category,
+  order,
+  sort_by,
+  title,
+  owner,
+}) => {
   const { data } = await gamesApi.get("/reviews", {
-    params: { category, order },
+    params: { category, order, sort_by, title, owner },
   });
-  return data.reviews;
+  return data;
 };
 
 export const getReviewById = async (review_id) => {
@@ -18,9 +22,8 @@ export const getReviewById = async (review_id) => {
   return data.review;
 };
 
-export const getReviewsByUsername = async (username) => {
-  const { data } = await gamesApi.get(`/reviews?owner=${username}`);
-  return data.reviews;
+export const deleteReviewById = async (review_id) => {
+  return await gamesApi.delete(`/reviews/${review_id}`);
 };
 
 export const getComments = async (review_id) => {
@@ -33,6 +36,13 @@ export const getCategories = async () => {
   return data.categories;
 };
 
+export const getUsers = async ({ order, sort_by }) => {
+  const { data } = await gamesApi.get("/users", {
+    params: { order, sort_by },
+  });
+  return data.users;
+};
+
 export const getUserByUsername = async (username) => {
   const { data } = await gamesApi.get(`/users/${username}`);
   return data.user;
@@ -41,4 +51,26 @@ export const getUserByUsername = async (username) => {
 export const postUser = async (userObj) => {
   const { data } = await gamesApi.post(`/users`, userObj);
   return data.user;
+};
+
+export const patchReviewById = async (review_id, votes) => {
+  const { data } = await gamesApi.patch(`/reviews/${review_id}`, {
+    inc_votes: votes,
+  });
+  return data.review;
+};
+
+export const postCommentToReview = async (review_id, username, comment) => {
+  const { data } = await gamesApi.post(`/reviews/${review_id}/comments`, {
+    author: username,
+    body: comment,
+  });
+  return data.comment;
+};
+
+export const patchCommentById = async (comment_id, votes) => {
+  const { data } = await gamesApi.patch(`/comments/${comment_id}`, {
+    inc_votes: votes,
+  });
+  return data.comment;
 };
