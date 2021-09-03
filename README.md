@@ -6,7 +6,7 @@ Northcoders Games has game reviews which are divided into categories. Each revie
 
 ## Front-end app
 
-Deployed:
+Deployed: https://brave-khorana-429f41.netlify.app
 
 Github: https://github.com/cjpearson85/fe-nc-games
 
