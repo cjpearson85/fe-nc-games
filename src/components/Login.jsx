@@ -12,7 +12,7 @@ const Login = ({ setLoggedInAs }) => {
     getUserByUsername(usernameInput)
       .then((user) => {
         setLoggedInAs(user);
-        history.push("/profile");
+        history.push(`/users/${user.username}`);
       })
       .catch(() => {
         setUserNotFound(true);

@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { getUsers } from "../api";
 
 const UsersList = () => {
   const [users, setUsers] = useState([]);
-  const [sortBy, setSortBy] = useState({order: "asc", sort_by: "username"});
-
+  const [sortBy, setSortBy] = useState("username-asc");
   const [isLoading, setIsLoading] = useState(true);
+  const history = useHistory();
 
   useEffect(() => {
     setIsLoading(true);
@@ -24,15 +25,15 @@ const UsersList = () => {
           defaultValue={sortBy}
           onChange={({ target: { value } }) => setSortBy(value)}
         >
-          <option value={{order: "asc", sort_by: "username"}}>Alphabetical (A-Z)</option>
-          <option value={{order: "desc", sort_by: "username"}}>Alphabetical (Z-A)</option>
-          <option value={{order: "desc", sort_by: "total_likes"}}>Most likes</option>
+          <option value="username-asc">Alphabetical (A-Z)</option>
+          <option value="username-desc">Alphabetical (Z-A)</option>
+          <option value="total_likes-desc">Most likes</option>
         </select>
       </label>
       <ul>
         {users.map(({ username, avatar_url, name, total_likes }) => {
           return (
-            <li key={username}>
+            <li key={username} onClick={() => history.push(`/users/${username}`)}>
               <div className="profile__card">
                 <img src={avatar_url !== "" ? avatar_url : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"} alt="" className="profile__img" />
                 <div className="profile__info">

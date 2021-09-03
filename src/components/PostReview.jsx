@@ -13,14 +13,19 @@ const PostReview = ({ categories, username }) => {
 
   const createReview = (event) => {
     event.preventDefault();
+
+    let review_img_url;
+    imageInput === "" ? review_img_url = 'https://images.pexels.com/photos/163064/play-stone-network-networked-interactive-163064.jpeg' : review_img_url = imageInput;
+    
     const newReview = {
       owner: username,
       title: titleInput,
-      review_img_url: imageInput,
+      review_img_url,
       review_body: bodyInput,
       designer: "Uncredited",
       category: categoryInput,
     };
+    
     postReview(newReview)
       .then(({ review_id }) => {
         setError(false);

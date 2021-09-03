@@ -1,15 +1,23 @@
 import { useEffect, useState } from "react";
 import { getCategories, getReviews } from "../api";
 import { useParams, useHistory, generatePath } from "react-router-dom";
-import { createRef, getTimeSince, prettifyText } from "../utils/helper-functions";
+import {
+  createRef,
+  getTimeSince,
+  prettifyText,
+} from "../utils/helper-functions";
+import PostReview from "./PostReview";
 
-const ReviewList = () => {
+const ReviewList = ({ loggedInAs: { username } }) => {
   const [reviews, setReviews] = useState([]);
   const [categories, setCategories] = useState([]);
   const [sortBy, setSortBy] = useState("created_at");
   const [searchInput, setSearchInput] = useState("");
   const [searchWord, setSearchWord] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [showReviewForm, setShowReviewForm] = useState(false);
+  const [reviewTotal, setReviewTotal] = useState(0);
+  const [page, setPage] = useState(1);
   const { category } = useParams();
   const history = useHistory();
 
@@ -19,7 +27,7 @@ const ReviewList = () => {
     if (Object.is(parseInt(value), NaN)) {
       value === "all"
         ? (path = `/`)
-        : (path = generatePath("/reviews/:category", { category: value }));
+        : (path = generatePath("/categories/:category", { category: value }));
     } else {
       path = generatePath("/reviews/:review_id", { review_id: value });
     }
@@ -34,20 +42,39 @@ const ReviewList = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    getReviews({category, sort_by: sortBy, title: searchWord}).then(({reviews}) => {
-      setIsLoading(false);
-      setReviews(reviews);
+    getReviews({ category, sort_by: sortBy, title: searchWord }).then(
+      ({ reviews, total_count }) => {
+        setPage(1);
+        setIsLoading(false);
+        setReviewTotal(total_count);
+        setReviews(reviews);
+      }
+    ).catch((err) => {
+        history.push("/");
     });
   }, [category, sortBy, searchWord]);
 
-  const categoryLookup = createRef(categories, 'slug', 'description');
+  useEffect(() => {
+    setIsLoading(true);
+    getReviews({ category, sort_by: sortBy, title: searchWord, p: page }).then(
+      ({ reviews }) => {
+        setIsLoading(false);
+        setReviews(reviews);
+      }
+    );
+  }, [page]);
+
+  const categoryLookup = createRef(categories, "slug", "description");
 
   if (isLoading) return <p className="loading">Loading...</p>;
   return (
     <div className="ReviewList">
-      <h2>{!category ? "All" : prettifyText(category)} reviews</h2>
+      <h2>
+        {!category ? "All" : prettifyText(category)} reviews ({reviewTotal})
+      </h2>
       {category ? <p>{categoryLookup[category]}</p> : null}
       <label>
+        Category:{" "}
         <select
           defaultValue={category || "all"}
           onChange={({ target }) => routeChange(target)}
@@ -63,6 +90,8 @@ const ReviewList = () => {
         </select>
       </label>
       <label>
+        {" "}
+        Sort By:{" "}
         <select
           defaultValue={sortBy}
           onChange={({ target: { value } }) => setSortBy(value)}
@@ -95,17 +124,32 @@ const ReviewList = () => {
           />
         </label>
         <button type="submit">Search</button>
-        <button type="reset" onClick={() => {
+        <button
+          type="reset"
+          onClick={() => {
             setSearchInput("");
             setSearchWord("");
-        }}>Clear</button>
+            setSortBy("created_at");
+            setPage(1);
+          }}
+        >
+          Reset
+        </button>
       </form>
+      <p>
+        Page {page} of {Math.ceil(reviewTotal / 10)}
+      </p>
+      {username && (<button onClick={() => setShowReviewForm((curr) => !curr)}>
+        {showReviewForm ? "Hide form" : "Post new review"}
+      </button>)}
+      {showReviewForm && <PostReview categories={categories} username={username}/>}
       <ul>
         {reviews.map(
           ({
             review_id,
             title,
             owner,
+            avatar_url,
             category,
             review_img_url,
             created_at,
@@ -120,22 +164,29 @@ const ReviewList = () => {
               >
                 <img src={review_img_url} alt="" />
                 <div className="title_category">
-                  <h3>{title}</h3>
+                  <h4>{title}</h4>
                   <p>{`posted ${getTimeSince(created_at)}`}</p>
                   <p className="category_tag" value={category}>
                     {prettifyText(category)}
                   </p>
                 </div>
-                <p>{owner}</p>
-                <div className="votes_comments_count">
-                  <p>{`❤️   ${votes}`}</p>
-                  <p>{`💬   ${comment_count}`}</p>
+                <div className="review-card__bottom-line">
+                    <p><img className="small__avatar" src={avatar_url} alt="" />{owner}</p>
+                    <div className="votes_comments_count">
+                      <p>{`❤️   ${votes}`}</p>
+                      <p>{`💬   ${comment_count}`}</p>
+                    </div>
                 </div>
               </li>
             );
           }
         )}
       </ul>
+      {page < Math.ceil(reviewTotal / 10) && (
+        <button onClick={() => setPage((currPage) => currPage + 1)}>
+          Load more
+        </button>
+      )}
     </div>
   );
 };
