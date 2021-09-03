@@ -7,6 +7,7 @@ import {
   prettifyText,
 } from "../utils/helper-functions";
 import PostReview from "./PostReview";
+import Loader from "./Loader";
 
 const ReviewList = ({ loggedInAs: { username } }) => {
   const [reviews, setReviews] = useState([]);
@@ -66,7 +67,7 @@ const ReviewList = ({ loggedInAs: { username } }) => {
 
   const categoryLookup = createRef(categories, "slug", "description");
 
-  if (isLoading) return <p className="loading">Loading...</p>;
+  if (isLoading) return <Loader />;
   return (
     <div className="ReviewList">
       <div className="review-options">

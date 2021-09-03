@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { deleteReviewById, getReviews, getUserByUsername } from "../api";
 import { getTimeSince, prettifyText } from "../utils/helper-functions";
+import Loader from "./Loader";
 
 const UserProfile = ({ loggedInAs, setLoggedInAs }) => {
   const [user, setUser] = useState({});
@@ -47,7 +48,7 @@ const UserProfile = ({ loggedInAs, setLoggedInAs }) => {
     history.push("/");
   };
 
-  if (isLoading) return <p className="loading">Loading...</p>;
+  if (isLoading) return <Loader/>;
   return (
     <div className="UserProfile">
       <h2>{myProfile() ? "My Profile" : "Profile"}</h2>

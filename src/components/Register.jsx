@@ -6,13 +6,13 @@ const Register = ({setLoggedInAs}) => {
   const [usernameInput, setUsernameInput] = useState("");
   const [usernameValid, setUsernameValid] = useState();
   const [usernameAvailable, setUsernameAvailable] = useState(false);
-  console.log(usernameValid, "<<< usernameValid");
-  console.log(usernameAvailable, "<<< usernameAvailable");
+//   console.log(usernameValid, "<<< usernameValid");
+//   console.log(usernameAvailable, "<<< usernameAvailable");
 
   const [errorMsg, setErrorMsg] = useState("");
 
   const [nameInput, setNameInput] = useState("");
-  const [avatarInput, setAvatarInput] = useState();
+  const [avatarInput, setAvatarInput] = useState("");
   const history = useHistory();
 
   const checkUsername = () => {
@@ -34,20 +34,27 @@ const Register = ({setLoggedInAs}) => {
 
   const createAccount = (event) => {
       event.preventDefault();
-      postUser({username: usernameInput, name: nameInput, avatar_url: avatarInput}).then((user) => {
+
+      const newUser = {
+        username: usernameInput,
+        name: nameInput,
+        avatar_url: avatarInput
+      }
+      postUser(newUser).then((user) => {
         setLoggedInAs(user);
-        history.push("/profile");
+        history.push(`/users/${user.username}`);
       })
   }
 
   return (
     <div className="Register">
       <h2>Register account</h2>
-      <form onSubmit={(event) => createAccount(event)}>
+      <form onSubmit={createAccount}>
         <label>
           Username:{" "}
           <input
             type="text"
+            value={usernameInput}
             onChange={({ target: { value } }) => setUsernameInput(value)}
             onBlur={checkUsername}
             required
@@ -63,6 +70,7 @@ const Register = ({setLoggedInAs}) => {
           Name:{" "}
           <input
             type="text"
+            value={nameInput}
             onChange={({ target: { value } }) => setNameInput(value)}
             required
           />
@@ -72,6 +80,7 @@ const Register = ({setLoggedInAs}) => {
           Avatar:{" "}
           <input
             type="url"
+            value={avatarInput}
             onChange={({ target: { value } }) => setAvatarInput(value)}
           />
         </label>

@@ -8,6 +8,7 @@ import {
 } from "../api";
 import { getTimeSince } from "../utils/helper-functions";
 import LikeButton from "./LikeButton";
+import Loader from "./Loader";
 
 const FullReview = ({ loggedInAs: { username } }) => {
   const [review, setReview] = useState({});
@@ -56,7 +57,7 @@ const FullReview = ({ loggedInAs: { username } }) => {
     setCommentsOpen((currStatus) => !currStatus);
   };
 
-  if (isLoading) return <p className="loading">Loading...</p>;
+  if (isLoading) return <Loader/>;
   return (
     <div className="FullReview">
       <img src={review.review_img_url} alt="" />

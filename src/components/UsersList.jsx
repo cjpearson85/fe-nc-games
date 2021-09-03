@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { getUsers } from "../api";
+import Loader from "./Loader";
 
 const UsersList = () => {
   const [users, setUsers] = useState([]);
@@ -16,7 +17,7 @@ const UsersList = () => {
     });
   }, [sortBy]);
 
-  if (isLoading) return <p className="loading">Loading...</p>;
+  if (isLoading) return <Loader />;
   return (
     <div className="UsersList">
       <div className="users-options">

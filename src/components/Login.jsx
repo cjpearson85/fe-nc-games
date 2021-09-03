@@ -22,7 +22,7 @@ const Login = ({ setLoggedInAs }) => {
   return (
     <div className="Login">
       <h2>Log In</h2>
-      <form onSubmit={(event) => checkUsername(event)}>
+      <form onSubmit={checkUsername}>
         <label>
           Username:{" "}
           <input

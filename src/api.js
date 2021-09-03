@@ -43,7 +43,7 @@ export const getCategories = async () => {
 };
 
 export const getUsers = async (sortBy) => {
-  const [sort_by, order] = sortBy.split('-');
+  const [sort_by, order] = sortBy.split("-");
   const { data } = await gamesApi.get("/users", {
     params: { order, sort_by },
   });
@@ -56,6 +56,9 @@ export const getUserByUsername = async (username) => {
 };
 
 export const postUser = async (userObj) => {
+  if (!/(http)?s?:?(\/\/[^"']*\.(?:png|jpg|jpeg|gif|png|svg))/i.test(userObj.avatar_url))
+    userObj.avatar_url =
+      "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
   const { data } = await gamesApi.post(`/users`, userObj);
   return data.user;
 };
@@ -83,5 +86,5 @@ export const patchCommentById = async (comment_id, votes) => {
 };
 
 export const deleteCommentById = async (comment_id) => {
-    return await gamesApi.delete(`/comments/${comment_id}`)
-}
+  return await gamesApi.delete(`/comments/${comment_id}`);
+};
