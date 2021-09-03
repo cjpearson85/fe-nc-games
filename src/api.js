@@ -10,11 +10,17 @@ export const getReviews = async ({
   sort_by,
   title,
   owner,
+  p,
 }) => {
   const { data } = await gamesApi.get("/reviews", {
-    params: { category, order, sort_by, title, owner },
+    params: { category, order, sort_by, title, owner, p },
   });
   return data;
+};
+
+export const postReview = async (newReview) => {
+  const { data } = await gamesApi.post("/reviews", newReview);
+  return data.review;
 };
 
 export const getReviewById = async (review_id) => {
@@ -36,7 +42,8 @@ export const getCategories = async () => {
   return data.categories;
 };
 
-export const getUsers = async ({ order, sort_by }) => {
+export const getUsers = async (sortBy) => {
+  const [sort_by, order] = sortBy.split('-');
   const { data } = await gamesApi.get("/users", {
     params: { order, sort_by },
   });
@@ -74,3 +81,7 @@ export const patchCommentById = async (comment_id, votes) => {
   });
   return data.comment;
 };
+
+export const deleteCommentById = async (comment_id) => {
+    return await gamesApi.delete(`/comments/${comment_id}`)
+}
