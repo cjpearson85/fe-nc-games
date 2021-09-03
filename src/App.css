@@ -1,46 +1,94 @@
+* {
+  /* border: 1px solid red; */
+  box-sizing: border-box;
+}
+
 .App {
   width: 100vw;
+  /* height: 100vh; */
+  height: 100%;
+  /* background-color: rgb(228, 231, 235); */
+}
+
+main {
+  margin: auto;
+  max-width: 768px;
   min-height: 100vh;
-  background-color: whitesmoke;
+  max-height: 1000vh;
+}
+
+.Sidebar a {
+  color: inherit;
+  text-decoration: none;
 }
 
 .Sidebar {
-  width: 50vw;
   height: 92vh;
   position: fixed;
   top: 8vh;
   z-index: 1;
   background-color: #eb1b24;
   color: whitesmoke;
+  box-shadow: -20px 0px 10px 20px black;
+  border-right: 1px solid white;
 }
 
 .Sidebar > ul {
+  margin: 0;
   display: block;
 }
 
-h3 > img {
-    height: 3rem;
-    width: 3rem;
-    border-radius: 50%;
+.Sidebar h3 {
+  padding: 1rem;
+  margin: 0;
+  border-bottom: 1px solid white;
 }
 
-.ReviewList, .UsersList {
-  /* border: 2px solid blue; */
+.Sidebar li {
+  padding: 1rem;
+  border-bottom: 1px solid white;
+}
+
+.Sidebar img {
+  max-width: 150px;
+  height: auto;
+}
+
+
+
+h3 > img {
+  height: 3rem;
+  width: 3rem;
+  border-radius: 50%;
+}
+
+.ReviewList,
+.UsersList,
+.FullReview,
+.UserProfile {
+  min-height: 92vh;
+  max-width: 768px;
   margin: auto;
   position: absolute;
   top: 8vh;
   background-color: whitesmoke;
-}
-
-.FullReview, .loading {
-  position: absolute;
-  top: 8vh;
-  background-color: whitesmoke;
+  box-shadow: 0px 0px 10px 5px rgba(197, 197, 197, 0.644);
 }
 
 .FullReview > img {
-  width: 100vw;
+  width: 100%;
   height: auto;
+  max-height: 768px;
+  object-fit: contain;
+  background-color: whitesmoke;
+}
+
+.UserProfile > h2 {
+  padding-left: 1rem;
+}
+
+.UserProfile > .profile__card {
+  margin: auto;
 }
 
 .review_body {
@@ -48,22 +96,18 @@ h3 > img {
   margin: auto;
 }
 
-.Login {
+.Login,
+.Register,
+.loading {
+  text-align: center;
   position: absolute;
+  width: 100%;
+  max-width: 768px;
+  min-height: 92vh;
+  margin: auto;
   top: 8vh;
   background-color: whitesmoke;
-}
-
-.Register {
-  position: absolute;
-  top: 8vh;
-  background-color: whitesmoke;
-}
-
-.UserProfile {
-  position: absolute;
-  top: 8vh;
-  background-color: whitesmoke;
+  z-index: 0;
 }
 
 ul {
@@ -76,14 +120,14 @@ ul {
 
 .review_card {
   padding: 0.5rem;
-  margin-bottom: 5vw;
+  margin: 1rem;
+  max-width: 337.5px;
   width: 90%;
   background-color: rgb(228, 231, 235);
-  /* border: 2px solid blue; */
-  /* text-align: center; */
   display: grid;
-  grid-template-columns: 30vw auto;
-  grid-template-rows: 30vw auto;
+  grid-template-columns: 30% auto;
+  grid-template-rows: 100px auto;
+  row-gap: 0.5rem;
   box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.171);
 }
 
@@ -91,55 +135,76 @@ ul {
   padding-left: 0.5rem;
 }
 
-.title_category > h3 {
-  margin: 0;
+.title_category > h4, p {
+  margin: 0.25rem;
 }
 
 .category_tag {
   display: inline-block;
   color: white;
   background-color: #eb1b24;
-  margin: 0;
-  padding:0.25rem;
+  margin: 0.25rem;
+  padding: 0.25rem;
   border-radius: 0.2rem;
   font-size: 0.9rem;
 }
 
+.review-card__bottom-line {
+  grid-column: 1 / span 2;
+}
+
+.review-card__bottom-line > p {
+  display: inline-block;
+}
+
 .votes_comments_count {
+  float: right;
   justify-self: right;
 }
 
 .votes_comments_count > p {
   display: inline-block;
-  margin-right: 1rem; 
+  margin-right: 1rem;
 }
 
 .review_card > img {
-  vertical-align: middle;
-  width: 100%;
-  max-height: 30vw;
+  width: 100px;
+  height: 100px;
   object-fit: contain;
+  background-color: whitesmoke;
+}
+
+.small__avatar {
+  object-fit: contain;
+  overflow: hidden;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  /* border: 1px solid black; */
+  background-color: white;
 }
 
 .comments {
+  display: block;
   justify-content: left;
 }
 
 .comment-card {
-  min-width: 60vw;
+  width: 100%;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid darkgrey;
 }
 
 .profile__card {
   padding: 0.5rem;
-  margin: auto;
-  margin-bottom: 5vw;
-  width: 90vw;
+  margin: 1rem;
+  width: 337.5px;
   height: auto;
   background-color: rgb(228, 231, 235);
   /* border: 2px solid blue; */
   /* text-align: center; */
   display: grid;
-  grid-template-columns: 30vw auto;
+  grid-template-columns: 30% auto;
   box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.171);
 }
 
@@ -172,6 +237,7 @@ ul {
 
 .error {
   color: red;
+  font-weight: bold;
 }
 
 .hidden {
