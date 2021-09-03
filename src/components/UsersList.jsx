@@ -19,17 +19,19 @@ const UsersList = () => {
   if (isLoading) return <p className="loading">Loading...</p>;
   return (
     <div className="UsersList">
-      <h2>Users</h2>
-      <label>
-        <select
-          defaultValue={sortBy}
-          onChange={({ target: { value } }) => setSortBy(value)}
-        >
-          <option value="username-asc">Alphabetical (A-Z)</option>
-          <option value="username-desc">Alphabetical (Z-A)</option>
-          <option value="total_likes-desc">Most likes</option>
-        </select>
-      </label>
+      <div className="users-options">
+          <h2>Users</h2>
+          <label>
+            <select
+              defaultValue={sortBy}
+              onChange={({ target: { value } }) => setSortBy(value)}
+            >
+              <option value="username-asc">Alphabetical (A-Z)</option>
+              <option value="username-desc">Alphabetical (Z-A)</option>
+              <option value="total_likes-desc">Most likes</option>
+            </select>
+          </label>
+      </div>
       <ul>
         {users.map(({ username, avatar_url, name, total_likes }) => {
           return (

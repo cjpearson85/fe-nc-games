@@ -102,7 +102,7 @@ const UserProfile = ({ loggedInAs, setLoggedInAs }) => {
           }
         )}
       </ul>
-      {myProfile() && <button disabled={!myProfile()} onClick={logOut}>Log out</button>}
+      {myProfile() && <div className="logout-button"><button disabled={!myProfile()} onClick={logOut}>Log out</button></div>}
       {/* <button onClick={deleteAccount}>Delete account</button> */}
     </div>
   );

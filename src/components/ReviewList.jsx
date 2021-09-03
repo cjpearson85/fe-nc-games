@@ -69,80 +69,83 @@ const ReviewList = ({ loggedInAs: { username } }) => {
   if (isLoading) return <p className="loading">Loading...</p>;
   return (
     <div className="ReviewList">
-      <h2>
-        {!category ? "All" : prettifyText(category)} reviews ({reviewTotal})
-      </h2>
-      {category ? <p>{categoryLookup[category]}</p> : null}
-      <label>
-        Category:{" "}
-        <select
-          defaultValue={category || "all"}
-          onChange={({ target }) => routeChange(target)}
-        >
-          <option value="all">All</option>
-          {categories.map(({ slug }) => {
-            return (
-              <option key={slug} value={slug}>
-                {prettifyText(slug)}
-              </option>
-            );
-          })}
-        </select>
-      </label>
-      <label>
-        {" "}
-        Sort By:{" "}
-        <select
-          defaultValue={sortBy}
-          onChange={({ target: { value } }) => setSortBy(value)}
-        >
-          <option value="created_at">Newest</option>
-          <option value="votes">Most likes</option>
-          <option value="comment_count">Most comments</option>
-        </select>
-      </label>
-      {/* <button
-        onClick={({ target: { value } }) => {
-          setOrder(value);
-        }}
-        value={order === "asc" ? "desc" : "asc"}
-      >
-        {order === "asc" ? "Desc" : "Asc"}
-      </button> */}
-      <form
-        onSubmit={(event) => {
-          event.preventDefault();
-          setSearchWord(searchInput);
-        }}
-      >
-        <label>
-          <input
-            type="text"
-            placeholder="Enter keyword"
-            value={searchInput}
-            onChange={({ target: { value } }) => setSearchInput(value)}
-          />
-        </label>
-        <button type="submit">Search</button>
-        <button
-          type="reset"
-          onClick={() => {
-            setSearchInput("");
-            setSearchWord("");
-            setSortBy("created_at");
-            setPage(1);
-          }}
-        >
-          Reset
-        </button>
-      </form>
-      <p>
-        Page {page} of {Math.ceil(reviewTotal / 10)}
-      </p>
-      {username && (<button onClick={() => setShowReviewForm((curr) => !curr)}>
-        {showReviewForm ? "Hide form" : "Post new review"}
-      </button>)}
-      {showReviewForm && <PostReview categories={categories} username={username}/>}
+      <div className="review-options">
+          <h2>
+            {!category ? "All" : prettifyText(category)} reviews ({reviewTotal})
+          </h2>
+          {category ? <p>{categoryLookup[category]}</p> : null}
+          <label>
+            Category:{" "}
+            <select
+              defaultValue={category || "all"}
+              onChange={({ target }) => routeChange(target)}
+            >
+              <option value="all">All</option>
+              {categories.map(({ slug }) => {
+                return (
+                  <option key={slug} value={slug}>
+                    {prettifyText(slug)}
+                  </option>
+                );
+              })}
+            </select>
+          </label>
+          <br/>
+          <label>
+            {" "}
+            Sort By:{" "}
+            <select
+              defaultValue={sortBy}
+              onChange={({ target: { value } }) => setSortBy(value)}
+            >
+              <option value="created_at">Newest</option>
+              <option value="votes">Most likes</option>
+              <option value="comment_count">Most comments</option>
+            </select>
+          </label>
+          {/* <button
+            onClick={({ target: { value } }) => {
+              setOrder(value);
+            }}
+            value={order === "asc" ? "desc" : "asc"}
+          >
+            {order === "asc" ? "Desc" : "Asc"}
+          </button> */}
+          <form
+            onSubmit={(event) => {
+              event.preventDefault();
+              setSearchWord(searchInput);
+            }}
+          >
+            <label>
+              <input
+                type="text"
+                placeholder="Enter keyword"
+                value={searchInput}
+                onChange={({ target: { value } }) => setSearchInput(value)}
+              />
+            </label>
+            <button type="submit">Search</button>
+            <button
+              type="reset"
+              onClick={() => {
+                setSearchInput("");
+                setSearchWord("");
+                setSortBy("created_at");
+                setPage(1);
+              }}
+            >
+              Reset
+            </button>
+          </form>
+          {username && (<button onClick={() => setShowReviewForm((curr) => !curr)}>
+            {showReviewForm ? "Hide form" : "Post new review"}
+          </button>)}
+          {showReviewForm && <PostReview categories={categories} username={username}/>}
+          {!reviews.length ? <p className="page">No results found</p> : (<p className="no-results">
+            Page {page} of {Math.ceil(reviewTotal / 10)}
+          </p>)}
+      </div>
       <ul>
         {reviews.map(
           ({
@@ -183,9 +186,11 @@ const ReviewList = ({ loggedInAs: { username } }) => {
         )}
       </ul>
       {page < Math.ceil(reviewTotal / 10) && (
-        <button onClick={() => setPage((currPage) => currPage + 1)}>
-          Load more
-        </button>
+        <div className="page-button">
+            <button onClick={() => setPage((currPage) => currPage + 1)}>
+              Load more
+            </button>
+        </div>
       )}
     </div>
   );

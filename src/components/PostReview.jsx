@@ -25,7 +25,7 @@ const PostReview = ({ categories, username }) => {
       designer: "Uncredited",
       category: categoryInput,
     };
-    
+
     postReview(newReview)
       .then(({ review_id }) => {
         setError(false);
@@ -76,6 +76,7 @@ const PostReview = ({ categories, username }) => {
             onChange={({ target: { value } }) => setImageInput(value)}
           />
         </label>
+        <br/>
         <label>
           <textarea
             required

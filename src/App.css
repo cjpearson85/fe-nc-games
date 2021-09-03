@@ -91,6 +91,22 @@ h3 > img {
   margin: auto;
 }
 
+.review-options, .users-options {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.page, .no-results {
+  text-align: center;
+  padding-top: 1rem;
+}
+
+.page-button, .logout-button {
+  text-align: center;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+
 .review_body {
   width: 90%;
   margin: auto;
@@ -135,7 +151,11 @@ ul {
   padding-left: 0.5rem;
 }
 
-.title_category > h4, p {
+.title_category > h4 {
+  margin: 0.25rem;
+}
+
+.title_category > p {
   margin: 0.25rem;
 }
 
