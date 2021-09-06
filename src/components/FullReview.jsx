@@ -15,7 +15,6 @@ const FullReview = ({ loggedInAs: { username } }) => {
   const [comments, setComments] = useState([]);
   const [commentInput, setCommentInput] = useState("");
   const [commentsOpen, setCommentsOpen] = useState(true);
-  const [commentDeleted, setCommentDeleted] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const { review_id } = useParams();
   const history = useHistory()
@@ -32,10 +31,9 @@ const FullReview = ({ loggedInAs: { username } }) => {
 
   useEffect(() => {
     getComments(review_id).then((comments) => {
-      setCommentDeleted(false);
       setComments(comments);
     });
-  }, [review_id, commentDeleted]);
+  }, [review_id]);
 
   const postComment = (event) => {
     event.preventDefault();
@@ -49,7 +47,9 @@ const FullReview = ({ loggedInAs: { username } }) => {
 
   const deleteComment = ({target: {value}}) => {
     deleteCommentById(value).then(() => {
-      setCommentDeleted(true);
+      setComments(currentComments => {
+        return currentComments.filter(({comment_id}) => comment_id != value)
+      })
     })
   }
 
