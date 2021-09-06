@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { getCategories, getReviews } from "../api";
 import { useParams, useHistory, generatePath } from "react-router-dom";
 import {
@@ -8,24 +8,33 @@ import {
 } from "../utils/helper-functions";
 import PostReview from "./PostReview";
 import Loader from "./Loader";
+import useFetch from "../hooks/useFetch";
 
 const ReviewList = ({ loggedInAs: { username } }) => {
-  const [reviews, setReviews] = useState([]);
+  // const [reviews, setReviews] = useState([]);
   const [categories, setCategories] = useState([]);
   const [sortBy, setSortBy] = useState("created_at");
   const [searchInput, setSearchInput] = useState("");
   const [searchWord, setSearchWord] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
   const [showReviewForm, setShowReviewForm] = useState(false);
-  const [reviewTotal, setReviewTotal] = useState(0);
   const [page, setPage] = useState(1);
   const { category } = useParams();
+  const [queries, setQueries] = useState({...category});
+  const { isLoading, error, reviews, setReviews, reviewTotal, hasMore } = useFetch(queries, page);
+  const observer = useRef();
   const history = useHistory();
 
   const routeChange = ({ value }) => {
     let path;
 
     if (Object.is(parseInt(value), NaN)) {
+      setPage(1);
+      setQueries(currentQueries => {
+        const newCategory = {...currentQueries};
+        value === "all" ? delete newCategory.category : newCategory.category = value;
+        return newCategory
+      })
       value === "all"
         ? (path = `/`)
         : (path = generatePath("/categories/:category", { category: value }));
@@ -41,70 +50,95 @@ const ReviewList = ({ loggedInAs: { username } }) => {
     });
   }, []);
 
-  useEffect(() => {
-    setIsLoading(true);
-    getReviews({ category, sort_by: sortBy, title: searchWord }).then(
-      ({ reviews, total_count }) => {
-        setPage(1);
-        setIsLoading(false);
-        setReviewTotal(total_count);
-        setReviews(reviews);
-      }
-    ).catch((err) => {
-        history.push("/");
-    });
-  }, [category, sortBy, searchWord]);
+  // useEffect(() => {
+  //   setIsLoading(true);
+  //   getReviews({ category, sort_by: sortBy, title: searchWord, p: page })
+  //     .then(({ reviews, total_count }) => {
+  //       setIsLoading(false);
+  //       setReviewTotal(total_count);
+  //       setReviews((currentReviews) => {
+  //         return [...new Set([...currentReviews, ...reviews])];
+  //       });
+  //     })
+  //     .catch(() => {
+  //       history.push("/");
+  //     });
+  // }, [category, sortBy, searchWord, page]);
 
-  useEffect(() => {
-    setIsLoading(true);
-    getReviews({ category, sort_by: sortBy, title: searchWord, p: page }).then(
-      ({ reviews }) => {
-        setIsLoading(false);
-        setReviews(reviews);
-      }
-    );
-  }, [page]);
+  // useEffect(() => {
+  //   setIsLoading(true);
+  //   getReviews({ category, sort_by: sortBy, title: searchWord, p: page }).then(
+  //     ({ reviews }) => {
+  //       setIsLoading(false);
+  //       setReviews((currentReviews) => {
+  //         return [...currentReviews, reviews]
+  //       });
+
+  //     }
+  //   );
+  // }, [page]);
+
+  const lastReviewElementRef = useCallback(
+    (node) => {
+      if (isLoading) return;
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          setPage((prev) => prev + 1);
+        }
+      });
+      if (node) observer.current.observe(node);
+    },
+    [isLoading, hasMore]
+  );
 
   const categoryLookup = createRef(categories, "slug", "description");
 
-  if (isLoading) return <Loader />;
+  // if (isLoading) return <Loader />;
   return (
     <div className="ReviewList">
       <div className="review-options">
-          <h2>
-            {!category ? "All" : prettifyText(category)} reviews ({reviewTotal})
-          </h2>
-          {category ? <p>{categoryLookup[category]}</p> : null}
-          <label>
-            Category:{" "}
-            <select
-              defaultValue={category || "all"}
-              onChange={({ target }) => routeChange(target)}
-            >
-              <option value="all">All</option>
-              {categories.map(({ slug }) => {
-                return (
-                  <option key={slug} value={slug}>
-                    {prettifyText(slug)}
-                  </option>
-                );
-              })}
-            </select>
-          </label>
-          <br/>
-          <label>
-            {" "}
-            Sort By:{" "}
-            <select
-              defaultValue={sortBy}
-              onChange={({ target: { value } }) => setSortBy(value)}
-            >
-              <option value="created_at">Newest</option>
-              <option value="votes">Most likes</option>
-              <option value="comment_count">Most comments</option>
-            </select>
-          </label>
-          {/* <button
+        <h2>
+          {!category ? "All" : prettifyText(category)} reviews ({reviewTotal})
+        </h2>
+        {category ? <p>{categoryLookup[category]}</p> : null}
+        <label>
+          Category:{" "}
+          <select
+            defaultValue={category || "all"}
+            onChange={({ target }) => routeChange(target)}
+          >
+            <option value="all">All</option>
+            {categories.map(({ slug }) => {
+              return (
+                <option key={slug} value={slug}>
+                  {prettifyText(slug)}
+                </option>
+              );
+            })}
+          </select>
+        </label>
+        <br />
+        <label>
+          {" "}
+          Sort By:{" "}
+          <select
+            defaultValue={sortBy}
+            onChange={({ target: { value } }) => {
+              setPage(1);
+              // setReviews([]);
+              // setSortBy(value);
+              setQueries(currentQueries => {
+                return {...currentQueries, sort_by: value}
+              })
+            }}
+          >
+            <option value="created_at">Newest</option>
+            <option value="votes">Most likes</option>
+            <option value="comment_count">Most comments</option>
+          </select>
+        </label>
+        {/* <button
             onClick={({ target: { value } }) => {
               setOrder(value);
             }}
@@ -112,40 +146,46 @@ const ReviewList = ({ loggedInAs: { username } }) => {
           >
             {order === "asc" ? "Desc" : "Asc"}
           </button> */}
-          <form
-            onSubmit={(event) => {
-              event.preventDefault();
-              setSearchWord(searchInput);
+        <form
+          onSubmit={(event) => {
+            event.preventDefault();
+            setPage(1);
+            // setReviews([]);
+            // setSearchWord(searchInput);
+            setQueries(currentQueries => {
+              return {...currentQueries, title: searchInput}
+            })
+          }}
+        >
+          <label>
+            <input
+              type="text"
+              placeholder="Enter keyword"
+              value={searchInput}
+              onChange={({ target: { value } }) => setSearchInput(value)}
+            />
+          </label>
+          <button type="submit">Search</button>
+          <button
+            type="reset"
+            onClick={() => {
+              setSearchInput("");
+              setQueries({});
+              setPage(1);
             }}
           >
-            <label>
-              <input
-                type="text"
-                placeholder="Enter keyword"
-                value={searchInput}
-                onChange={({ target: { value } }) => setSearchInput(value)}
-              />
-            </label>
-            <button type="submit">Search</button>
-            <button
-              type="reset"
-              onClick={() => {
-                setSearchInput("");
-                setSearchWord("");
-                setSortBy("created_at");
-                setPage(1);
-              }}
-            >
-              Reset
-            </button>
-          </form>
-          {username && (<button onClick={() => setShowReviewForm((curr) => !curr)}>
+            Reset
+          </button>
+        </form>
+        {username && (
+          <button onClick={() => setShowReviewForm((curr) => !curr)}>
             {showReviewForm ? "Hide form" : "Post new review"}
-          </button>)}
-          {showReviewForm && <PostReview categories={categories} username={username}/>}
-          {!reviews.length ? <p className="page">No results found</p> : (<p className="no-results">
-            Page {page} of {Math.ceil(reviewTotal / 10)}
-          </p>)}
+          </button>
+        )}
+        {showReviewForm && (
+          <PostReview categories={categories} username={username} />
+        )}
+        {!reviews.length && <p className="page">No results found</p>}
       </div>
       <ul>
         {reviews.map(
@@ -159,40 +199,75 @@ const ReviewList = ({ loggedInAs: { username } }) => {
             created_at,
             votes,
             comment_count,
-          }) => {
-            return (
-              <li
-                key={review_id}
-                className="review_card"
-                onClick={() => routeChange({ value: review_id })}
-              >
-                <img src={review_img_url} alt="" />
-                <div className="title_category">
-                  <h4>{title}</h4>
-                  <p>{`posted ${getTimeSince(created_at)}`}</p>
-                  <p className="category_tag" value={category}>
-                    {prettifyText(category)}
-                  </p>
-                </div>
-                <div className="review-card__bottom-line">
-                    <p><img className="small__avatar" src={avatar_url} alt="" />{owner}</p>
+          }, i) => {
+            if (reviews.length === i + 1) {
+              return (
+                <li
+                  key={review_id}
+                  ref={lastReviewElementRef}
+                  className="review_card"
+                  onClick={() => routeChange({ value: review_id })}
+                >
+                  <img src={review_img_url} alt="" />
+                  <div className="title_category">
+                    <h4>{title}</h4>
+                    <p>{`posted ${getTimeSince(created_at)}`}</p>
+                    <p className="category_tag" value={category}>
+                      {prettifyText(category)}
+                    </p>
+                  </div>
+                  <div className="review-card__bottom-line">
+                    <p>
+                      <img className="small__avatar" src={avatar_url} alt="" />
+                      {owner}
+                    </p>
                     <div className="votes_comments_count">
                       <p>{`❤️   ${votes}`}</p>
                       <p>{`💬   ${comment_count}`}</p>
                     </div>
-                </div>
-              </li>
-            );
+                  </div>
+                </li>
+              );
+
+            } else {
+              return (
+                <li
+                  key={review_id}
+                  className="review_card"
+                  onClick={() => routeChange({ value: review_id })}
+                >
+                  <img src={review_img_url} alt="" />
+                  <div className="title_category">
+                    <h4>{title}</h4>
+                    <p>{`posted ${getTimeSince(created_at)}`}</p>
+                    <p className="category_tag" value={category}>
+                      {prettifyText(category)}
+                    </p>
+                  </div>
+                  <div className="review-card__bottom-line">
+                    <p>
+                      <img className="small__avatar" src={avatar_url} alt="" />
+                      {owner}
+                    </p>
+                    <div className="votes_comments_count">
+                      <p>{`❤️   ${votes}`}</p>
+                      <p>{`💬   ${comment_count}`}</p>
+                    </div>
+                  </div>
+                </li>
+              );
+            }
           }
         )}
       </ul>
-      {page < Math.ceil(reviewTotal / 10) && (
+      <div>{isLoading && "Loading..."}</div>
+      {/* {page < Math.ceil(reviewTotal / 10) && (
         <div className="page-button">
-            <button onClick={() => setPage((currPage) => currPage + 1)}>
-              Load more
-            </button>
+          <button onClick={() => setPage((currPage) => currPage + 1)}>
+            Load more
+          </button>
         </div>
-      )}
+      )} */}
     </div>
   );
 };
