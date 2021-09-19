@@ -47,31 +47,29 @@ const LikeButton = ({ setReview, review_id, setComments, comment_id }) => {
   };
 
   if (review_id) {
-    {
-      return liked ? (
-        <button
-          className="LikeButton"
-          value="-1"
-          onClick={({ target: { value } }) => {
-            setLiked(false);
-            updateReviewLikes(value);
-          }}
-        >
-          ❤️
-        </button>
-      ) : (
-        <button
-          className="LikeButton"
-          value="1"
-          onClick={({ target: { value } }) => {
-            setLiked(true);
-            updateReviewLikes(value);
-          }}
-        >
-          🤍
-        </button>
-      );
-    }
+    return liked ? (
+      <button
+        className="LikeButton"
+        value="-1"
+        onClick={({ target: { value } }) => {
+          setLiked(false);
+          updateReviewLikes(value);
+        }}
+      >
+        ❤️
+      </button>
+    ) : (
+      <button
+        className="LikeButton"
+        value="1"
+        onClick={({ target: { value } }) => {
+          setLiked(true);
+          updateReviewLikes(value);
+        }}
+      >
+        🤍
+      </button>
+    );
   } else if (comment_id) {
     return liked ? (
       <button
