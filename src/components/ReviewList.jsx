@@ -127,7 +127,7 @@ const ReviewList = ({ loggedInAs: { username } }) => {
             onChange={({ target: { value } }) => {
               setPage(1);
               // setReviews([]);
-              // setSortBy(value);
+              setSortBy(value);
               setQueries(currentQueries => {
                 return {...currentQueries, sort_by: value}
               })
@@ -171,6 +171,7 @@ const ReviewList = ({ loggedInAs: { username } }) => {
             onClick={() => {
               setSearchInput("");
               setQueries({});
+              setSortBy('created_at');
               setPage(1);
             }}
           >
@@ -217,17 +218,19 @@ const ReviewList = ({ loggedInAs: { username } }) => {
                     </p>
                   </div>
                   <div className="review-card__bottom-line">
-                    <p>
+                    <div className="avatar_username">
                       <img className="small__avatar" src={avatar_url} alt="" />
-                      {owner}
-                    </p>
+                      <p>{owner}</p>
+                    </div>
                     <div className="votes_comments_count">
-                      <p>{`❤️   ${votes}`}</p>
-                      <p>{`💬   ${comment_count}`}</p>
+                      <p>❤️</p>
+                      <p>{votes}</p>
+                      <p>💬</p>
+                      <p>{comment_count}</p>
                     </div>
                   </div>
                 </li>
-              );
+              )
 
             } else {
               return (
@@ -245,17 +248,19 @@ const ReviewList = ({ loggedInAs: { username } }) => {
                     </p>
                   </div>
                   <div className="review-card__bottom-line">
-                    <p>
+                    <div className="avatar_username">
                       <img className="small__avatar" src={avatar_url} alt="" />
-                      {owner}
-                    </p>
+                      <p>{owner}</p>
+                    </div>
                     <div className="votes_comments_count">
-                      <p>{`❤️   ${votes}`}</p>
-                      <p>{`💬   ${comment_count}`}</p>
+                      <p>❤️</p>
+                      <p>{votes}</p>
+                      <p>💬</p>
+                      <p>{comment_count}</p>
                     </div>
                   </div>
                 </li>
-              );
+              )
             }
           }
         )}
