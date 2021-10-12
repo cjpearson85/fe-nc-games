@@ -3,9 +3,10 @@ import { Link } from "react-router-dom";
 const Sidebar = ({
   loggedInAs: { username, name, avatar_url },
   setLoggedInAs,
+  sidebarOpen,
 }) => {
   return (
-    <nav className="Sidebar">
+    <nav className={`Sidebar ${sidebarOpen && 'showSidebar'}`}>
       {!name ? (
         <>
           <img
@@ -39,7 +40,7 @@ const Sidebar = ({
         {/* <li>Dark mode</li> */}
       </ul>
     </nav>
-  );
-};
+  )
+}
 
 export default Sidebar;
