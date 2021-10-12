@@ -1,0 +1,81 @@
+.review_container, .comment_container {
+  background-color: whitesmoke;
+  padding: 1rem;
+}
+
+.review_container {
+  margin-bottom: 0.5rem;
+}
+
+.title, .date, .review_body, .comment_likes {
+  margin-bottom: 0.75rem;
+}
+
+.avatar_handle {
+  display: flex;
+  align-items: center;
+}
+
+.avatar_img {
+  object-fit: contain;
+  overflow: hidden;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-left: 0.5rem;
+  border-radius: 50%;
+  background-color: white;
+}
+
+.date {
+  font-size: 14px;
+  font-style: italic;
+}
+
+.comment_header {
+  background-color: #eb1b24;
+  color: whitesmoke;
+  padding: 0.75rem 1rem;
+}
+
+.comment_input {
+  display: grid;
+  grid-template-columns: auto 15%;
+  grid-column-gap: 0.5rem;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.text_field, .send_button {
+  font-size: 1rem;
+  border-radius: 0.3rem;
+  padding: 0.2rem;
+}
+
+.text_field {
+  border: 1px solid black;
+}
+
+.send_button {
+  background-color: #eb1b24;
+  color: whitesmoke;
+  border: none;
+  font-weight: 600;
+}
+
+.comment_card {
+  width: 100%;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-top: 1px solid darkgrey;
+}
+
+.comment_rowOne {
+  display: flex;
+  justify-content: space-between;
+}
+
+.delete {
+  font-size: 0.8rem;
+  background-color: transparent;
+  border: none;
+}
