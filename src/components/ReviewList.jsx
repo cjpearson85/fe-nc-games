@@ -99,13 +99,13 @@ const ReviewList = ({ loggedInAs: { username } }) => {
     <div className="ReviewList">
       <div className="review-options">
         <h2>
-          {!category ? "All" : prettifyText(category)} reviews ({reviewTotal})
+          {!category ? 'All' : prettifyText(category)} reviews ({reviewTotal})
         </h2>
         {category ? <p>{categoryLookup[category]}</p> : null}
         <label>
-          Category:{" "}
+          Category:{' '}
           <select
-            defaultValue={category || "all"}
+            defaultValue={category || 'all'}
             onChange={({ target }) => routeChange(target)}
           >
             <option value="all">All</option>
@@ -114,22 +114,22 @@ const ReviewList = ({ loggedInAs: { username } }) => {
                 <option key={slug} value={slug}>
                   {prettifyText(slug)}
                 </option>
-              );
+              )
             })}
           </select>
         </label>
         <br />
         <label>
-          {" "}
-          Sort By:{" "}
+          {' '}
+          Sort By:{' '}
           <select
             defaultValue={sortBy}
             onChange={({ target: { value } }) => {
-              setPage(1);
+              setPage(1)
               // setReviews([]);
-              setSortBy(value);
-              setQueries(currentQueries => {
-                return {...currentQueries, sort_by: value}
+              setSortBy(value)
+              setQueries((currentQueries) => {
+                return { ...currentQueries, sort_by: value }
               })
             }}
           >
@@ -148,12 +148,12 @@ const ReviewList = ({ loggedInAs: { username } }) => {
           </button> */}
         <form
           onSubmit={(event) => {
-            event.preventDefault();
-            setPage(1);
+            event.preventDefault()
+            setPage(1)
             // setReviews([]);
             // setSearchWord(searchInput);
-            setQueries(currentQueries => {
-              return {...currentQueries, title: searchInput}
+            setQueries((currentQueries) => {
+              return { ...currentQueries, title: searchInput }
             })
           }}
         >
@@ -169,18 +169,21 @@ const ReviewList = ({ loggedInAs: { username } }) => {
           <button
             type="reset"
             onClick={() => {
-              setSearchInput("");
-              setQueries({});
-              setSortBy('created_at');
-              setPage(1);
+              setSearchInput('')
+              setQueries({})
+              setSortBy('created_at')
+              setPage(1)
             }}
           >
             Reset
           </button>
         </form>
         {username && (
-          <button onClick={() => setShowReviewForm((curr) => !curr)}>
-            {showReviewForm ? "Hide form" : "Post new review"}
+          <button
+            className="show-hide-button"
+            onClick={() => setShowReviewForm((curr) => !curr)}
+          >
+            {showReviewForm ? 'Hide form' : '+ Post new review'}
           </button>
         )}
         {showReviewForm && (
@@ -190,17 +193,20 @@ const ReviewList = ({ loggedInAs: { username } }) => {
       </div>
       <ul>
         {reviews.map(
-          ({
-            review_id,
-            title,
-            owner,
-            avatar_url,
-            category,
-            review_img_url,
-            created_at,
-            votes,
-            comment_count,
-          }, i) => {
+          (
+            {
+              review_id,
+              title,
+              owner,
+              avatar_url,
+              category,
+              review_img_url,
+              created_at,
+              votes,
+              comment_count,
+            },
+            i
+          ) => {
             if (reviews.length === i + 1) {
               return (
                 <li
@@ -231,7 +237,6 @@ const ReviewList = ({ loggedInAs: { username } }) => {
                   </div>
                 </li>
               )
-
             } else {
               return (
                 <li
@@ -265,7 +270,7 @@ const ReviewList = ({ loggedInAs: { username } }) => {
           }
         )}
       </ul>
-      <div>{isLoading && "Loading..."}</div>
+      <div>{isLoading && 'Loading...'}</div>
       {/* {page < Math.ceil(reviewTotal / 10) && (
         <div className="page-button">
           <button onClick={() => setPage((currPage) => currPage + 1)}>
@@ -274,7 +279,7 @@ const ReviewList = ({ loggedInAs: { username } }) => {
         </div>
       )} */}
     </div>
-  );
+  )
 };
 
 export default ReviewList;

@@ -142,6 +142,51 @@ ul {
   justify-content: center;
 }
 
+.review-form-container {
+  margin-bottom: 0;
+}
+
+.review-form label {
+  line-height: 2em;
+  font-weight: var(--bold-font);
+  color: var(--primary-color);
+}
+
+.review-form textarea {
+  font-family: inherit;
+}
+
+.show-hide-button, .review-form button {
+  margin-top: 0.8rem;
+  width: 10rem;
+  font-size: 0.875rem;
+  border-radius: 5px;
+  padding: 12px;
+  background-color: #eb1b24;
+  color: whitesmoke;
+  border: none;
+  font-weight: 600;
+}
+
+.submit-container {
+ display: flex;
+ justify-content: center;
+}
+
+.input-field {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  border: 2px solid #eb1b24;
+  font-size: 0.875rem;
+  outline: none;
+}
+
+.input-field:focus::placeholder {
+  color: transparent;
+}
+
 .review_card {
   padding: 0.5rem;
   margin: 0.5rem;
@@ -242,23 +287,18 @@ ul {
   justify-content: left;
 }
 
-.comment-card {
-  width: 100%;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid darkgrey;
-}
-
 .profile__card {
   padding: 0.5rem;
-  margin: 1rem;
+  margin: 0.5rem;
   width: 337.5px;
   height: auto;
-  background-color: rgb(228, 231, 235);
+  border-radius: 0.5rem;
+  background-color: whitesmoke;
   /* border: 2px solid blue; */
   /* text-align: center; */
   display: grid;
   grid-template-columns: 30% auto;
-  box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.171);
+  box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.2);
 }
 
 .profile__img {
@@ -272,11 +312,15 @@ ul {
 }
 
 .profile__info {
-  margin-left: 1rem;
+  margin-left: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
 }
 
 .profile__info > h4 {
   margin: 0.5rem;
+  font-size: 14px;
 }
 
 .LikeButton {
