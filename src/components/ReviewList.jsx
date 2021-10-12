@@ -9,46 +9,50 @@ import {
 import PostReview from "./PostReview";
 import Loader from "./Loader";
 import useFetch from "../hooks/useFetch";
+import search from '../images/icons8-search-24.png'
 
-const ReviewList = ({ loggedInAs: { username } }) => {
+const ReviewList = ({ loggedInAs: { username }, searchOpen }) => {
   // const [reviews, setReviews] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [sortBy, setSortBy] = useState("created_at");
-  const [searchInput, setSearchInput] = useState("");
-  const [searchWord, setSearchWord] = useState("");
+  const [categories, setCategories] = useState([])
+  const [sortBy, setSortBy] = useState('created_at')
+  const [searchInput, setSearchInput] = useState('')
+  const [searchWord, setSearchWord] = useState('')
   // const [isLoading, setIsLoading] = useState(true);
-  const [showReviewForm, setShowReviewForm] = useState(false);
-  const [page, setPage] = useState(1);
-  const { category } = useParams();
-  const [queries, setQueries] = useState({...category});
-  const { isLoading, error, reviews, setReviews, reviewTotal, hasMore } = useFetch(queries, page);
-  const observer = useRef();
-  const history = useHistory();
+  const [showReviewForm, setShowReviewForm] = useState(false)
+  const [page, setPage] = useState(1)
+  const { category } = useParams()
+  const [queries, setQueries] = useState({ ...category })
+  const { isLoading, error, reviews, setReviews, reviewTotal, hasMore } =
+    useFetch(queries, page)
+  const observer = useRef()
+  const history = useHistory()
 
   const routeChange = ({ value }) => {
-    let path;
+    let path
 
     if (Object.is(parseInt(value), NaN)) {
-      setPage(1);
-      setQueries(currentQueries => {
-        const newCategory = {...currentQueries};
-        value === "all" ? delete newCategory.category : newCategory.category = value;
+      setPage(1)
+      setQueries((currentQueries) => {
+        const newCategory = { ...currentQueries }
+        value === 'all'
+          ? delete newCategory.category
+          : (newCategory.category = value)
         return newCategory
       })
-      value === "all"
+      value === 'all'
         ? (path = `/`)
-        : (path = generatePath("/categories/:category", { category: value }));
+        : (path = generatePath('/categories/:category', { category: value }))
     } else {
-      path = generatePath("/reviews/:review_id", { review_id: value });
+      path = generatePath('/reviews/:review_id', { review_id: value })
     }
-    history.push(path);
-  };
+    history.push(path)
+  }
 
   useEffect(() => {
     getCategories().then((categories) => {
-      setCategories(categories);
-    });
-  }, []);
+      setCategories(categories)
+    })
+  }, [])
 
   // useEffect(() => {
   //   setIsLoading(true);
@@ -80,23 +84,60 @@ const ReviewList = ({ loggedInAs: { username } }) => {
 
   const lastReviewElementRef = useCallback(
     (node) => {
-      if (isLoading) return;
-      if (observer.current) observer.current.disconnect();
+      if (isLoading) return
+      if (observer.current) observer.current.disconnect()
       observer.current = new IntersectionObserver((entries) => {
         if (entries[0].isIntersecting && hasMore) {
-          setPage((prev) => prev + 1);
+          setPage((prev) => prev + 1)
         }
-      });
-      if (node) observer.current.observe(node);
+      })
+      if (node) observer.current.observe(node)
     },
     [isLoading, hasMore]
-  );
+  )
 
-  const categoryLookup = createRef(categories, "slug", "description");
+  const categoryLookup = createRef(categories, 'slug', 'description')
 
   // if (isLoading) return <Loader />;
   return (
     <div className="ReviewList">
+      <div className={`searchBar ${searchOpen && 'showSearchBar'}`}>
+        <form
+          className="searchInput"
+          onSubmit={(event) => {
+            event.preventDefault()
+            setPage(1)
+            // setReviews([]);
+            // setSearchWord(searchInput);
+            setQueries((currentQueries) => {
+              return { ...currentQueries, title: searchInput }
+            })
+          }}
+        >
+          <label>
+            <input
+              type="text"
+              placeholder="Enter keyword"
+              value={searchInput}
+              onChange={({ target: { value } }) => setSearchInput(value)}
+            />
+          </label>
+          <button className="searchButton" type="submit">
+            <img src={search} alt="search_icon" className="search_icon" />
+          </button>
+          {/* <button
+            type="reset"
+            onClick={() => {
+              setSearchInput('')
+              setQueries({})
+              setSortBy('created_at')
+              setPage(1)
+            }}
+          >
+            Reset
+          </button> */}
+        </form>
+      </div>
       <div className="review-options">
         <h2>
           {!category ? 'All' : prettifyText(category)} reviews ({reviewTotal})
@@ -120,7 +161,6 @@ const ReviewList = ({ loggedInAs: { username } }) => {
         </label>
         <br />
         <label>
-          {' '}
           Sort By:{' '}
           <select
             defaultValue={sortBy}
@@ -138,6 +178,7 @@ const ReviewList = ({ loggedInAs: { username } }) => {
             <option value="comment_count">Most comments</option>
           </select>
         </label>
+        <br />
         {/* <button
             onClick={({ target: { value } }) => {
               setOrder(value);
@@ -146,38 +187,6 @@ const ReviewList = ({ loggedInAs: { username } }) => {
           >
             {order === "asc" ? "Desc" : "Asc"}
           </button> */}
-        <form
-          onSubmit={(event) => {
-            event.preventDefault()
-            setPage(1)
-            // setReviews([]);
-            // setSearchWord(searchInput);
-            setQueries((currentQueries) => {
-              return { ...currentQueries, title: searchInput }
-            })
-          }}
-        >
-          <label>
-            <input
-              type="text"
-              placeholder="Enter keyword"
-              value={searchInput}
-              onChange={({ target: { value } }) => setSearchInput(value)}
-            />
-          </label>
-          <button type="submit">Search</button>
-          <button
-            type="reset"
-            onClick={() => {
-              setSearchInput('')
-              setQueries({})
-              setSortBy('created_at')
-              setPage(1)
-            }}
-          >
-            Reset
-          </button>
-        </form>
         {username && (
           <button
             className="show-hide-button"
@@ -280,6 +289,6 @@ const ReviewList = ({ loggedInAs: { username } }) => {
       )} */}
     </div>
   )
-};
+}
 
 export default ReviewList;

@@ -25,14 +25,20 @@ main {
 }
 
 .Sidebar {
-  height: 92vh;
+  /* height: 92vh; */
   position: fixed;
-  top: 8vh;
+  top: 51px;
   z-index: 1;
   background-color: #eb1b24;
   color: whitesmoke;
-  box-shadow: -20px 0px 10px 20px black;
+  box-shadow: 0px 0px 5px black;
   border-right: 1px solid white;
+  transform: translateX(-120%);
+  transition: transform 0.5s ease-in;
+}
+
+.showSidebar {
+  transform: translateX(0);
 }
 
 .Sidebar > ul {
@@ -70,7 +76,7 @@ h3 > img {
   max-width: 768px;
   margin: auto;
   position: absolute;
-  top: 8vh;
+  top: 51px;
   background-color: #ebebe6;
   box-shadow: 0px 0px 10px 5px rgba(197, 197, 197, 0.644);
 }
@@ -91,6 +97,46 @@ h3 > img {
   margin: auto;
 }
 
+.searchBar {
+  display: none;
+  width: 100%;
+  padding: 1rem;
+  background-color: whitesmoke;
+  z-index: 4;
+  border-bottom: 2px solid #eb1b24;
+}
+
+.searchInput {
+  display: grid;
+  grid-template-columns: auto 40px;
+}
+
+.searchBar input {
+  width: 100%;
+  padding: 10px;
+  border-bottom-left-radius: 5px;
+  border-top-left-radius: 5px;
+  border: 2px solid #eb1b24;
+  font-size: 0.875rem;
+  outline: none;
+}
+
+.searchBar input:focus::placeholder {
+  color: transparent;
+}
+
+.searchButton {
+  background-color: #eb1b24;
+  border: none;
+  border-bottom-right-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.showSearchBar {
+  display: inline-block;
+  /* position: fixed; */
+}
+
 .review-options,
 .users-options {
   padding: 1rem;
@@ -98,7 +144,7 @@ h3 > img {
   border-bottom: 2px solid red;
 }
 
-.review-options > * {
+.review-options  h2 {
   margin-bottom: 0.75rem;
 }
 
@@ -143,6 +189,7 @@ ul {
 }
 
 .review-form-container {
+  margin-top: 1rem;
   margin-bottom: 0;
 }
 
