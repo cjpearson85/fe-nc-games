@@ -1,10 +1,12 @@
-const Loader = () => {
-    return (
-        <div className="loading">
-            <div className="loader"/>
-            <p>Loading...</p>
-        </div>
-    );
-};
+import styles from '../css_modules/Loader.module.css'
 
-export default Loader;
+const Loader = ({ size }) => {
+  return (
+    <div className={!size ? styles.loading : styles.loadingS}>
+      <div className={!size ? styles.loader : styles.loaderS} />
+      {!size && <p>Loading...</p>}
+    </div>
+  )
+}
+
+export default Loader

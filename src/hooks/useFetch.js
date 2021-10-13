@@ -3,31 +3,40 @@ import { getReviews } from "../api";
 
 function useFetch(queries, page) {
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(false);
-  const [reviews, setReviews] = useState([]);
-  const [reviewTotal, setReviewTotal] = useState(0);
-  const [hasMore, setHasMore] = useState(false);
+  const [initialLoad, setInitialLoad] = useState(true)
+  const [error, setError] = useState(false)
+  const [reviews, setReviews] = useState([])
+  const [reviewTotal, setReviewTotal] = useState(0)
+  const [hasMore, setHasMore] = useState(false)
 
   useEffect(() => {
-    setReviews([]);
-  }, [queries]);
+    setReviews([])
+  }, [queries])
 
   useEffect(() => {
-    setIsLoading(true);
-    setError(false);
+    setIsLoading(true)
+    setError(false)
 
-    getReviews({ ...queries, p: page }).then(({reviews, total_count}) => {
-        setReviewTotal(total_count);
-        setReviews((currentReviews) => [...new Set([...currentReviews, ...reviews])]);
-        setHasMore(reviews.length > 0);
-        setIsLoading(false);
-      })
+    getReviews({ ...queries, p: page }).then(({ reviews, total_count }) => {
+      setReviewTotal(total_count)
+      setReviews((currentReviews) => [
+        ...new Set([...currentReviews, ...reviews]),
+      ])
+      setHasMore(reviews.length > 0)
+      setInitialLoad(false)
+      setIsLoading(false)
+    })
+  }, [queries, page])
 
-  }, [queries, page]);
-
-
-
-  return { isLoading, error, reviews, setReviews, reviewTotal, hasMore };
+  return {
+    isLoading,
+    error,
+    reviews,
+    setReviews,
+    reviewTotal,
+    hasMore,
+    initialLoad,
+  }
 }
 
 export default useFetch;

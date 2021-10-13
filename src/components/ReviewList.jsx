@@ -22,8 +22,15 @@ const ReviewList = ({ loggedInAs: { username }, searchOpen }) => {
   const [page, setPage] = useState(1)
   const { category } = useParams()
   const [queries, setQueries] = useState({ ...category })
-  const { isLoading, error, reviews, setReviews, reviewTotal, hasMore } =
-    useFetch(queries, page)
+  const {
+    isLoading,
+    error,
+    reviews,
+    setReviews,
+    reviewTotal,
+    hasMore,
+    initialLoad,
+  } = useFetch(queries, page)
   const observer = useRef()
   const history = useHistory()
 
@@ -98,7 +105,7 @@ const ReviewList = ({ loggedInAs: { username }, searchOpen }) => {
 
   const categoryLookup = createRef(categories, 'slug', 'description')
 
-  // if (isLoading) return <Loader />;
+  if (initialLoad) return <Loader />
   return (
     <div className="ReviewList">
       <div className={`searchBar ${searchOpen && 'showSearchBar'}`}>
@@ -279,7 +286,7 @@ const ReviewList = ({ loggedInAs: { username }, searchOpen }) => {
           }
         )}
       </ul>
-      <div>{isLoading && 'Loading...'}</div>
+      {isLoading && <Loader size="small" />}
       {/* {page < Math.ceil(reviewTotal / 10) && (
         <div className="page-button">
           <button onClick={() => setPage((currPage) => currPage + 1)}>
