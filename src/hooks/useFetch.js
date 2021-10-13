@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
-import { getReviews } from "../api";
+import { useState, useEffect } from 'react'
+import { getReviews } from '../api'
 
 function useFetch(queries, page) {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true)
   const [initialLoad, setInitialLoad] = useState(true)
   const [error, setError] = useState(false)
   const [reviews, setReviews] = useState([])
@@ -39,4 +39,4 @@ function useFetch(queries, page) {
   }
 }
 
-export default useFetch;
+export default useFetch
