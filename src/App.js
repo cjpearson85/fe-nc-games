@@ -20,27 +20,37 @@ function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false)
 
+  document.addEventListener('click', (event) => {
+    if (event.target.closest('#navigation') === null) {
+      setSidebarOpen(false)
+    }
+  })
+
   return (
     <div className="App">
-      <Header
-        loggedInAs={loggedInAs}
-        sidebarOpen={sidebarOpen}
-        setSidebarOpen={setSidebarOpen}
-        searchOpen={searchOpen}
-        setSearchOpen={setSearchOpen}
-      />
-      {/* {sidebarOpen && (
-        <Sidebar loggedInAs={loggedInAs} setLoggedInAs={setLoggedInAs} />
-      )} */}
-      <Sidebar
-        loggedInAs={loggedInAs}
-        setLoggedInAs={setLoggedInAs}
-        sidebarOpen={sidebarOpen}
-      />
+      <div id="navigation">
+        <Header
+          loggedInAs={loggedInAs}
+          sidebarOpen={sidebarOpen}
+          setSidebarOpen={setSidebarOpen}
+          searchOpen={searchOpen}
+          setSearchOpen={setSearchOpen}
+        />
+        <Sidebar
+          loggedInAs={loggedInAs}
+          setLoggedInAs={setLoggedInAs}
+          sidebarOpen={sidebarOpen}
+          setSidebarOpen={setSidebarOpen}
+        />
+      </div>
       <main>
         <Switch>
           <Route exact path="/">
-            <ReviewList loggedInAs={loggedInAs} searchOpen={searchOpen} />
+            <ReviewList
+              loggedInAs={loggedInAs}
+              sidebarOpen={sidebarOpen}
+              searchOpen={searchOpen}
+            />
           </Route>
           <Route exact path="/login">
             <Login setLoggedInAs={setLoggedInAs} />
@@ -61,7 +71,11 @@ function App() {
             />
           </Route>
           <Route exact path="/categories/:category">
-            <ReviewList loggedInAs={loggedInAs} searchOpen={searchOpen} />
+            <ReviewList
+              loggedInAs={loggedInAs}
+              sidebarOpen={sidebarOpen}
+              searchOpen={searchOpen}
+            />
           </Route>
           <Route exact path="/reviews/:review_id">
             <FullReview loggedInAs={loggedInAs} />
