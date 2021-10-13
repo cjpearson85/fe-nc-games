@@ -39,27 +39,37 @@
 
 .comment_input {
   display: grid;
-  grid-template-columns: auto 15%;
-  grid-column-gap: 0.5rem;
-  font-size: 1rem;
+  grid-template-columns: auto 40px;
   margin-bottom: 1rem;
 }
 
-.text_field, .send_button {
-  font-size: 1rem;
-  border-radius: 0.3rem;
-  padding: 0.2rem;
+.text_field {
+  width: 100%;
+  padding: 10px;
+  border-bottom-left-radius: 5px;
+  border-top-left-radius: 5px;
+  border: 2px solid #eb1b24;
+  font-size: 0.875rem;
+  outline: none;
 }
 
-.text_field {
-  border: 1px solid black;
+.text_field:focus::placeholder {
+  color: transparent;
 }
 
 .send_button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: #eb1b24;
-  color: whitesmoke;
   border: none;
-  font-weight: 600;
+  border-bottom-right-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.send_button > img {
+  position: relative;
+  right: 1px;
 }
 
 .comment_card {

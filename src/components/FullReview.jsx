@@ -10,6 +10,7 @@ import { getTimeSince } from "../utils/helper-functions";
 import LikeButton from "./LikeButton";
 import styles from '../css_modules/FullReview.module.css'
 import Loader from './Loader'
+import postIcon from '../images/icons8-email-send-24.png'
 
 const FullReview = ({ loggedInAs: { username } }) => {
   const [review, setReview] = useState({})
@@ -100,7 +101,9 @@ const FullReview = ({ loggedInAs: { username } }) => {
               value={commentInput}
               onChange={({ target: { value } }) => setCommentInput(value)}
             />
-            <button className={styles.send_button}>Post</button>
+            <button className={styles.send_button}>
+              <img src={postIcon} alt="" />
+            </button>
             {/* <span> {commentInput.length ? commentInput.length : null}</span> */}
           </form>
         )}
