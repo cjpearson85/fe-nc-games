@@ -260,9 +260,15 @@ ul {
   transform: scale(1.02, 1.02);
 }
 
+.review_card > img {
+  border-radius: 0.25rem;
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
 
 .title_category {
-  padding-left: 1rem;
+  padding-left: 0.75rem;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -322,13 +328,6 @@ ul {
   font-size: 0.8rem;
   background-color: transparent;
   border: none;
-}
-
-.review_card > img {
-  border-radius: 0.25rem;
-  width: 100px;
-  height: 100px;
-  object-fit: contain;
 }
 
 .small__avatar {
