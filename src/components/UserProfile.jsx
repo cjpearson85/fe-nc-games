@@ -51,7 +51,7 @@ const UserProfile = ({ loggedInAs, setLoggedInAs }) => {
   if (isLoading) return <Loader/>;
   return (
     <div className="UserProfile">
-      <h2>{myProfile() ? "My Profile" : "Profile"}</h2>
+      <h2>{myProfile() ? 'My Profile' : 'Profile'}</h2>
       <div className="profile__card">
         <img src={user.avatar_url} alt="" className="profile__img" />
         <div className="profile__info">
@@ -60,7 +60,11 @@ const UserProfile = ({ loggedInAs, setLoggedInAs }) => {
           <h4>Total likes: {user.total_likes ? user.total_likes : 0}</h4>
         </div>
       </div>
-      <h2>{myProfile() ? `My Reviews (${reviewsTotal})` : `Reviews (${reviewsTotal})`}</h2>
+      <h2>
+        {myProfile()
+          ? `My Reviews (${reviewsTotal})`
+          : `Reviews (${reviewsTotal})`}
+      </h2>
       <ul>
         {userReviews.map(
           ({
@@ -76,8 +80,15 @@ const UserProfile = ({ loggedInAs, setLoggedInAs }) => {
           }) => {
             return (
               <li key={review_id} className="review_card">
-                <img src={review_img_url} alt="" onClick={() => history.push(`/reviews/${review_id}`)}/>
-                <div className="title_category">
+                <img
+                  src={review_img_url}
+                  alt=""
+                  onClick={() => history.push(`/reviews/${review_id}`)}
+                />
+                <div
+                  className="title_category"
+                  onClick={() => history.push(`/reviews/${review_id}`)}
+                >
                   <h4>{title}</h4>
                   <p>{`posted ${getTimeSince(created_at)}`}</p>
                   <p className="category_tag" value={category}>
@@ -85,28 +96,35 @@ const UserProfile = ({ loggedInAs, setLoggedInAs }) => {
                   </p>
                 </div>
                 <div className="review-card__bottom-line">
-                    <p><img className="small__avatar" src={avatar_url} alt="" />{owner}</p>
-                    <div className="votes_comments_count">
-                      <p>{`❤️   ${votes}`}</p>
-                      <p>{`💬   ${comment_count}`}</p>
-                      {myProfile() && <button
+                  <div className="avatar_username">
+                    <img className="small__avatar" src={avatar_url} alt="" />
+                    <p>{owner}</p>
+                  </div>
+                  <div className="votes_comments_count">
+                    <p>❤️</p>
+                    <p>{votes}</p>
+                    <p>💬</p>
+                    <p>{comment_count}</p>
+                    {myProfile() && (
+                      <button
                         disabled={!myProfile()}
                         value={review_id}
                         onClick={deletePost}
                       >
                         ❌
-                      </button>}
-                    </div>
+                      </button>
+                    )}
+                  </div>
                 </div>
               </li>
-            );
+            )
           }
         )}
       </ul>
-      {myProfile() && <div className="logout-button"><button disabled={!myProfile()} onClick={logOut}>Log out</button></div>}
+      {/* {myProfile() && <div className="logout-button"><button disabled={!myProfile()} onClick={logOut}>Log out</button></div>} */}
       {/* <button onClick={deleteAccount}>Delete account</button> */}
     </div>
-  );
+  )
 };
 
 export default UserProfile;
