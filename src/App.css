@@ -72,13 +72,19 @@ h3 > img {
 .UsersList,
 .FullReview,
 .UserProfile {
-  min-height: 92vh;
+  width: 100%;
+  min-height: 100%;
   max-width: 768px;
   margin: auto;
   position: absolute;
   top: 51px;
   background-color: #ebebe6;
   box-shadow: 0px 0px 10px 5px rgba(197, 197, 197, 0.644);
+}
+
+.blur {
+  filter: blur(1px) saturate(80%);
+  transition: filter 0.5s ease-in;
 }
 
 .FullReview > img {
@@ -90,7 +96,7 @@ h3 > img {
 }
 
 .UserProfile > h2 {
-  padding-left: 1rem;
+  padding: 1rem 0.5rem;
 }
 
 .UserProfile > .profile__card {
@@ -236,8 +242,8 @@ ul {
 .review_card {
   padding: 0.5rem;
   margin: 0.5rem;
-  max-width: 360px;
-  width: 100%;
+  width: 360px;
+  /* width: 100%; */
   border-radius: 0.5rem;
   /* background-color: rgb(228, 231, 235); */
   background-color: whitesmoke;
@@ -311,6 +317,13 @@ ul {
   margin-left: 0.5rem;
 }
 
+.votes_comments_count button {
+  margin-left: 0.5rem;
+  font-size: 0.8rem;
+  background-color: transparent;
+  border: none;
+}
+
 .review_card > img {
   border-radius: 0.25rem;
   width: 100px;
@@ -336,7 +349,7 @@ ul {
 .profile__card {
   padding: 0.5rem;
   margin: 0.5rem;
-  width: 337.5px;
+  width: 360px;
   height: auto;
   border-radius: 0.5rem;
   background-color: whitesmoke;
@@ -385,4 +398,14 @@ ul {
 
 .hidden {
   display: none;
+}
+
+@media screen and (min-width: 768px) {
+  .UserProfile > .profile__card {
+    margin-left: 1rem;
+  }
+
+  .UserProfile > h2 {
+    padding: 1rem;
+  }
 }
