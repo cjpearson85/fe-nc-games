@@ -11,21 +11,15 @@ const Nav = ({ sidebarOpen, setSidebarOpen, searchOpen, setSearchOpen }) => {
           sidebarOpen && styles.highlighted
         }`}
       >
-        {sidebarOpen ? (
-          <img
-            src={cancel}
-            alt="cancel_icon"
-            className={styles.cancel_icon}
-            onClick={() => setSidebarOpen((curr) => !curr)}
-          />
-        ) : (
-          <img
-            src={burger}
-            alt="burger_icon"
-            className={styles.burger_icon}
-            onClick={() => setSidebarOpen((curr) => !curr)}
-          />
-        )}
+        <img
+          src={sidebarOpen ? cancel : burger}
+          alt={sidebarOpen ? 'cancel_icon' : 'burger_icon'}
+          className={sidebarOpen ? styles.cancel_icon : styles.burger_icon}
+          onClick={() => {
+            setSidebarOpen((curr) => !curr)
+            !sidebarOpen && setSearchOpen(false)
+          }}
+        />
       </div>
       <h1 className={styles.title}>^NC games</h1>
       <div
@@ -33,21 +27,15 @@ const Nav = ({ sidebarOpen, setSidebarOpen, searchOpen, setSearchOpen }) => {
           searchOpen && styles.highlighted
         }`}
       >
-        {searchOpen ? (
-          <img
-            src={cancel}
-            alt="cancel_icon"
-            className={styles.cancel_icon}
-            onClick={() => setSearchOpen((curr) => !curr)}
-          />
-        ) : (
-          <img
-            src={search}
-            alt="search_icon"
-            className={styles.search_icon}
-            onClick={() => setSearchOpen((curr) => !curr)}
-          />
-        )}
+        <img
+          src={searchOpen ? cancel : search}
+          alt={searchOpen ? 'cancel_icon' : 'search_icon'}
+          className={searchOpen ? styles.cancel_icon : styles.search_icon}
+          onClick={() => {
+            setSearchOpen((curr) => !curr)
+            !searchOpen && setSidebarOpen(false)
+          }}
+        />
       </div>
     </header>
   )
