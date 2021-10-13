@@ -1,10 +1,13 @@
-import { Link } from "react-router-dom";
+import { useHistory } from 'react-router-dom'
 
 const Sidebar = ({
   loggedInAs: { username, name, avatar_url },
   setLoggedInAs,
   sidebarOpen,
+  setSidebarOpen,
 }) => {
+  const history = useHistory()
+
   return (
     <nav className={`Sidebar ${sidebarOpen && 'showSidebar'}`}>
       {!name ? (
@@ -16,31 +19,57 @@ const Sidebar = ({
           <h3>Guest</h3>
         </>
       ) : (
-        <Link to={`/users/${username}`}>
+        <div
+          onClick={() => {
+            setSidebarOpen(false)
+            history.push(`/users/${username}`)
+          }}
+        >
           <img src={avatar_url} alt="" />
           <h3>{name}</h3>
-        </Link>
+        </div>
       )}
       <ul>
-        <li>
-          <Link to="/">Home</Link>
+        <li
+          onClick={() => {
+            setSidebarOpen(false)
+            history.push('/')
+          }}
+        >
+          <p>Home</p>
         </li>
-        <li>
-          {!name ? (
-            <Link to="/login">Log In</Link>
-          ) : (
-            <Link to="/" onClick={() => setLoggedInAs({})}>
-              Log Out
-            </Link>
-          )}
+        <li
+          onClick={() => {
+            setSidebarOpen(false)
+            history.push('/users')
+          }}
+        >
+          <p>Users</p>
         </li>
-        <li>
-          <Link to="/users">Users</Link>
-        </li>
+        {!name ? (
+          <li
+            onClick={() => {
+              setSidebarOpen(false)
+              history.push('/login')
+            }}
+          >
+            <p>Log In</p>
+          </li>
+        ) : (
+          <li
+            onClick={() => {
+              setSidebarOpen(false)
+              setLoggedInAs({})
+              history.push('/')
+            }}
+          >
+            <p>Log Out</p>
+          </li>
+        )}
         {/* <li>Dark mode</li> */}
       </ul>
     </nav>
   )
 }
 
-export default Sidebar;
+export default Sidebar
