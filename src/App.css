@@ -90,9 +90,8 @@ h3 > img {
 .FullReview > img {
   width: 100%;
   height: auto;
-  max-height: 768px;
+  max-height: 450px;
   object-fit: contain;
-  background-color: whitesmoke;
 }
 
 .UserProfile > h2 {
@@ -425,6 +424,10 @@ ul {
 
 .hidden {
   display: none;
+}
+
+button:hover {
+  cursor: pointer;
 }
 
 @media screen and (min-width: 768px) {
