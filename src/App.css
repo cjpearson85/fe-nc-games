@@ -276,7 +276,7 @@ ul {
   /* background-color: rgb(228, 231, 235); */
   background-color: whitesmoke;
   display: grid;
-  grid-template-columns: 30% auto;
+  grid-template-columns: 100px auto;
   grid-template-rows: 100px auto;
   row-gap: 0.5rem;
   box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.2);
@@ -435,4 +435,28 @@ ul {
   .UserProfile > h2 {
     padding: 1rem;
   }
+}
+
+@media screen and (min-width: 1024px) {
+  body {
+    background-image: url('./images/background.jpg');
+    background-size: cover;
+    height: 100vh;
+    background-attachment: fixed;
+  }
+
+  .Login,
+  .Register,
+  .ReviewList,
+  .UsersList,
+  .FullReview,
+  .UserProfile,
+  main {
+    max-width: 1024px;
+  }
+
+  .review_card {
+    width: 490px;
+  }
+
 }
