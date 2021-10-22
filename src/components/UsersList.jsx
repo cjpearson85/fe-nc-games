@@ -21,7 +21,8 @@ const UsersList = () => {
   return (
     <div className="UsersList">
       <div className="users-options">
-          <h2>Users</h2>
+        <h2 style={{ marginBottom: '1rem' }}>Users</h2>
+        <div className="input-selects">
           <label>
             <select
               defaultValue={sortBy}
@@ -32,13 +33,25 @@ const UsersList = () => {
               <option value="total_likes-desc">Most likes</option>
             </select>
           </label>
+        </div>
       </div>
       <ul>
         {users.map(({ username, avatar_url, name, total_likes }) => {
           return (
-            <li key={username} onClick={() => history.push(`/users/${username}`)}>
+            <li
+              key={username}
+              onClick={() => history.push(`/users/${username}`)}
+            >
               <div className="profile__card">
-                <img src={avatar_url !== "" ? avatar_url : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"} alt="" className="profile__img" />
+                <img
+                  src={
+                    avatar_url !== ''
+                      ? avatar_url
+                      : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'
+                  }
+                  alt=""
+                  className="profile__img"
+                />
                 <div className="profile__info">
                   <h4>Username: {username}</h4>
                   <h4>Name: {name}</h4>
@@ -46,11 +59,11 @@ const UsersList = () => {
                 </div>
               </div>
             </li>
-          );
+          )
         })}
       </ul>
     </div>
-  );
+  )
 };
 
 export default UsersList;

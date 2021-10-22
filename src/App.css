@@ -106,10 +106,11 @@ h3 > img {
 .searchBar {
   display: none;
   width: 100%;
-  padding: 1rem;
+  padding: 0;
   background-color: whitesmoke;
   z-index: 4;
-  border-bottom: 2px solid #eb1b24;
+  margin-bottom: 0.5rem;
+  /* border-bottom: 2px solid #eb1b24; */
 }
 
 .searchInput {
@@ -138,6 +139,16 @@ h3 > img {
   border-top-right-radius: 5px;
 }
 
+.reset {
+  width: 42px;
+  height: 40px;
+  background-color: #eb1b24;
+  border: none;
+  border-radius: 5px;
+}
+
+
+
 .showSearchBar {
   display: inline-block;
   /* position: fixed; */
@@ -150,7 +161,7 @@ h3 > img {
   border-bottom: 2px solid red;
 }
 
-.review-options  h2 {
+.review-options h2, .review-options p {
   margin-bottom: 0.75rem;
 }
 
@@ -191,6 +202,23 @@ ul {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+}
+
+.input-selects {
+  display: flex;
+  justify-content: space-between;
+}
+
+.input-selects label {
+  display: block;
+  font-size: 0.875rem;
+  margin-bottom: 0.125rem;
+  font-weight: 500;
+}
+
+.input-selects select {
+  border: 2px solid #eb1b24;
+  border-radius: 4px;
 }
 
 .review-form-container {

@@ -27,7 +27,7 @@ const Nav = ({ sidebarOpen, setSidebarOpen, searchOpen, setSearchOpen }) => {
           searchOpen && styles.highlighted
         }`}
       >
-        <img
+        {/* <img
           src={searchOpen ? cancel : search}
           alt={searchOpen ? 'cancel_icon' : 'search_icon'}
           className={searchOpen ? styles.cancel_icon : styles.search_icon}
@@ -35,7 +35,7 @@ const Nav = ({ sidebarOpen, setSidebarOpen, searchOpen, setSearchOpen }) => {
             setSearchOpen((curr) => !curr)
             !searchOpen && setSidebarOpen(false)
           }}
-        />
+        /> */}
       </div>
     </header>
   )
