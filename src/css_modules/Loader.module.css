@@ -47,3 +47,9 @@
     transform: rotate(360deg);
   }
 }
+
+@media screen and (min-width: 1024px) {
+  .loading {
+    max-width: 1024px;
+  }
+}
