@@ -5,16 +5,12 @@ header {
   color: whitesmoke;
   height: 51px;
   width: 100%;
+  max-width: 1024px;
   box-shadow: 0px 0px 5px black;
   border-bottom: 1px solid whitesmoke;
-}
-
-.head_container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 1024px;
-  margin: 0 auto;
 }
 
 .icon_container {
@@ -24,6 +20,12 @@ header {
   justify-content: center;
   align-items: center;
 }
+
+.icon:hover {
+  cursor: pointer;
+}
+
+
 
 .highlighted {
   background-color: whitesmoke;
