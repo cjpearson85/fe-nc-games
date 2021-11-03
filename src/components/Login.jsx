@@ -1,30 +1,32 @@
-import { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
-import { getUserByUsername } from "../api";
+import { useState, useContext } from 'react'
+import { Link, useHistory } from 'react-router-dom'
+import { getUserByUsername } from '../api'
+import { AppUserContext } from '../App'
 
-const Login = ({ setLoggedInAs }) => {
-  const [usernameInput, setUsernameInput] = useState("");
-  const [userNotFound, setUserNotFound] = useState(false);
-  const history = useHistory();
+const Login = () => {
+  const { setLoggedInAs } = useContext(AppUserContext)
+  const [usernameInput, setUsernameInput] = useState('')
+  const [userNotFound, setUserNotFound] = useState(false)
+  const history = useHistory()
 
   const checkUsername = (event) => {
-    event.preventDefault();
+    event.preventDefault()
     getUserByUsername(usernameInput)
       .then((user) => {
-        setLoggedInAs(user);
-        history.push(`/users/${user.username}`);
+        setLoggedInAs(user)
+        history.push(`/users/${user.username}`)
       })
       .catch(() => {
-        setUserNotFound(true);
-      });
-  };
+        setUserNotFound(true)
+      })
+  }
 
   return (
     <div className="Login">
       <h2>Log In</h2>
       <form onSubmit={checkUsername}>
         <label>
-          Username:{" "}
+          Username:{' '}
           <input
             type="text"
             onChange={({ target: { value } }) => setUsernameInput(value)}
@@ -34,11 +36,11 @@ const Login = ({ setLoggedInAs }) => {
         {userNotFound ? <p className="error">User not found</p> : null}
       </form>
       <p>
-        Don't have an account? Click here to{" "}
+        Don't have an account? Click here to{' '}
         <Link to="/register">register</Link>.
       </p>
     </div>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login

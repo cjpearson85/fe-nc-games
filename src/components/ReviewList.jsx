@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState, useContext } from 'react'
 import { getCategories } from '../api'
+import { AppUserContext } from '../App'
 import { useParams, useHistory, generatePath } from 'react-router-dom'
 import {
   createRef,
@@ -12,7 +13,10 @@ import useFetch from '../hooks/useFetch'
 import search from '../images/icons8-search-24.png'
 import reset from '../images/icons8-refresh-24.png'
 
-const ReviewList = ({ loggedInAs: { username }, sidebarOpen, searchOpen }) => {
+const ReviewList = () => {
+  const {
+    loggedInAs: { username },
+  } = useContext(AppUserContext)
   const [categories, setCategories] = useState([])
   const [sortBy, setSortBy] = useState('created_at')
   const [searchInput, setSearchInput] = useState('')
@@ -74,11 +78,10 @@ const ReviewList = ({ loggedInAs: { username }, sidebarOpen, searchOpen }) => {
   )
 
   const categoryLookup = createRef(categories, 'slug', 'description')
-  const blurBg = sidebarOpen ? 'ReviewList blur' : 'ReviewList'
 
   if (initialLoad) return <Loader />
   return (
-    <div className={blurBg}>
+    <div className="ReviewList">
       <div className="review-options">
         <h2>
           {!category ? 'All' : prettifyText(category)} reviews ({reviewTotal})

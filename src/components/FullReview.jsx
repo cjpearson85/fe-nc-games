@@ -1,18 +1,22 @@
-import { useEffect, useState } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { useEffect, useState, useContext } from 'react'
+import { useHistory, useParams } from 'react-router-dom'
 import {
   deleteCommentById,
   getComments,
   getReviewById,
   postCommentToReview,
-} from "../api";
-import { getTimeSince } from "../utils/helper-functions";
-import LikeButton from "./LikeButton";
+} from '../api'
+import { AppUserContext } from '../App'
+import { getTimeSince } from '../utils/helper-functions'
+import LikeButton from './LikeButton'
 import styles from '../css_modules/FullReview.module.css'
 import Loader from './Loader'
 import postIcon from '../images/icons8-email-send-24.png'
 
-const FullReview = ({ loggedInAs: { username } }) => {
+const FullReview = () => {
+  const {
+    loggedInAs: { username },
+  } = useContext(AppUserContext)
   const [review, setReview] = useState({})
   const [comments, setComments] = useState([])
   const [commentInput, setCommentInput] = useState('')
@@ -149,4 +153,4 @@ const FullReview = ({ loggedInAs: { username } }) => {
   )
 }
 
-export default FullReview;
+export default FullReview

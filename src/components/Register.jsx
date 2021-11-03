@@ -1,49 +1,53 @@
-import { useState } from "react";
-import { useHistory } from "react-router-dom";
-import { getUserByUsername, postUser } from "../api";
+import { useState, useContext } from 'react'
+import { useHistory } from 'react-router-dom'
+import { AppUserContext } from '../App'
+import { getUserByUsername, postUser } from '../api'
 
-const Register = ({setLoggedInAs}) => {
-  const [usernameInput, setUsernameInput] = useState("");
-  const [usernameValid, setUsernameValid] = useState();
-  const [usernameAvailable, setUsernameAvailable] = useState(false);
-//   console.log(usernameValid, "<<< usernameValid");
-//   console.log(usernameAvailable, "<<< usernameAvailable");
+const Register = () => {
+  const { setLoggedInAs } = useContext(AppUserContext)
+  const [usernameInput, setUsernameInput] = useState('')
+  const [usernameValid, setUsernameValid] = useState()
+  const [usernameAvailable, setUsernameAvailable] = useState(false)
+  //   console.log(usernameValid, "<<< usernameValid");
+  //   console.log(usernameAvailable, "<<< usernameAvailable");
 
-  const [errorMsg, setErrorMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState('')
 
-  const [nameInput, setNameInput] = useState("");
-  const [avatarInput, setAvatarInput] = useState("");
-  const history = useHistory();
+  const [nameInput, setNameInput] = useState('')
+  const [avatarInput, setAvatarInput] = useState('')
+  const history = useHistory()
 
   const checkUsername = () => {
     if (!/^[a-z0-9_]{5,20}$/.test(usernameInput)) {
-      setErrorMsg("username must be between 5-20 characters, containing only letters, numbers and underscores");
-      setUsernameValid(false);
+      setErrorMsg(
+        'username must be between 5-20 characters, containing only letters, numbers and underscores'
+      )
+      setUsernameValid(false)
     } else {
-      setUsernameValid(true);
+      setUsernameValid(true)
       getUserByUsername(usernameInput)
         .then(() => {
-          setUsernameAvailable(false);
-          setErrorMsg("username already taken");
+          setUsernameAvailable(false)
+          setErrorMsg('username already taken')
         })
         .catch(() => {
-          setUsernameAvailable(true);
-        });
+          setUsernameAvailable(true)
+        })
     }
-  };
+  }
 
   const createAccount = (event) => {
-      event.preventDefault();
+    event.preventDefault()
 
-      const newUser = {
-        username: usernameInput,
-        name: nameInput,
-        avatar_url: avatarInput
-      }
-      postUser(newUser).then((user) => {
-        setLoggedInAs(user);
-        history.push(`/users/${user.username}`);
-      })
+    const newUser = {
+      username: usernameInput,
+      name: nameInput,
+      avatar_url: avatarInput,
+    }
+    postUser(newUser).then((user) => {
+      setLoggedInAs(user)
+      history.push(`/users/${user.username}`)
+    })
   }
 
   return (
@@ -51,7 +55,7 @@ const Register = ({setLoggedInAs}) => {
       <h2>Register account</h2>
       <form onSubmit={createAccount}>
         <label>
-          Username:{" "}
+          Username:{' '}
           <input
             type="text"
             value={usernameInput}
@@ -59,15 +63,15 @@ const Register = ({setLoggedInAs}) => {
             onBlur={checkUsername}
             required
           />
-          {usernameInput === ""
+          {usernameInput === ''
             ? null
             : usernameValid && usernameAvailable
-            ? " ✅"
+            ? ' ✅'
             : ` ❌ ${errorMsg}`}
         </label>
         <br />
         <label>
-          Name:{" "}
+          Name:{' '}
           <input
             type="text"
             value={nameInput}
@@ -77,7 +81,7 @@ const Register = ({setLoggedInAs}) => {
         </label>
         <br />
         <label>
-          Avatar:{" "}
+          Avatar:{' '}
           <input
             type="url"
             value={avatarInput}
@@ -87,7 +91,7 @@ const Register = ({setLoggedInAs}) => {
         <button type="submit">Create account</button>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default Register;
+export default Register

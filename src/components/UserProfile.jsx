@@ -1,54 +1,56 @@
-import { useEffect, useState } from "react";
-import { useHistory, useParams } from "react-router-dom";
-import { deleteReviewById, getReviews, getUserByUsername } from "../api";
-import { getTimeSince, prettifyText } from "../utils/helper-functions";
-import Loader from "./Loader";
+import { useEffect, useState, useContext } from 'react'
+import { useHistory, useParams } from 'react-router-dom'
+import { AppUserContext } from '../App'
+import { deleteReviewById, getReviews, getUserByUsername } from '../api'
+import { getTimeSince, prettifyText } from '../utils/helper-functions'
+import Loader from './Loader'
 
-const UserProfile = ({ loggedInAs, setLoggedInAs }) => {
-  const [user, setUser] = useState({});
-  const [userReviews, setUserReviews] = useState([]);
-  const [reviewsTotal, setReviewsTotal] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
-  const [postDeleted, setPostDeleted] = useState(false);
-  const { username } = useParams();
-  const history = useHistory();
+const UserProfile = () => {
+  const { loggedInAs, setLoggedInAs } = useContext(AppUserContext)
+  const [user, setUser] = useState({})
+  const [userReviews, setUserReviews] = useState([])
+  const [reviewsTotal, setReviewsTotal] = useState(0)
+  const [isLoading, setIsLoading] = useState(true)
+  const [postDeleted, setPostDeleted] = useState(false)
+  const { username } = useParams()
+  const history = useHistory()
 
   //   const [userComments, setUserComments] = useState([]);
   useEffect(() => {
-    setIsLoading(true);
+    setIsLoading(true)
     getUserByUsername(username).then((user) => {
-      setIsLoading(false);
+      setIsLoading(false)
 
-      setUser(user);
-    });
-  }, [username]);
+      setUser(user)
+    })
+  }, [username])
 
   useEffect(() => {
-    setIsLoading(true);
+    setIsLoading(true)
     getReviews({ owner: username }).then(({ reviews, total_count }) => {
-      setPostDeleted(false);
-      setIsLoading(false);
-      setUserReviews(reviews);
-      setReviewsTotal(total_count);
-    });
-  }, [username, postDeleted]);
+      setPostDeleted(false)
+      setIsLoading(false)
+      setUserReviews(reviews)
+      setReviewsTotal(total_count)
+    })
+  }, [username, postDeleted])
 
   const deletePost = ({ target: { value } }) => {
     deleteReviewById(value).then(() => {
-      setPostDeleted(true);
-    });
-  };
+      setPostDeleted(true)
+    })
+  }
 
   const myProfile = () => {
-      return user.username === loggedInAs.username
+    return user.username === loggedInAs.username
   }
 
   const logOut = () => {
-    setLoggedInAs({});
-    history.push("/");
-  };
+    setLoggedInAs({})
+    history.push('/')
+  }
 
-  if (isLoading) return <Loader/>;
+  if (isLoading) return <Loader />
   return (
     <div className="UserProfile">
       <h2>{myProfile() ? 'My Profile' : 'Profile'}</h2>
@@ -125,6 +127,6 @@ const UserProfile = ({ loggedInAs, setLoggedInAs }) => {
       {/* <button onClick={deleteAccount}>Delete account</button> */}
     </div>
   )
-};
+}
 
-export default UserProfile;
+export default UserProfile

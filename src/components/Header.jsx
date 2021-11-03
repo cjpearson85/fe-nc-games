@@ -1,11 +1,16 @@
+import { useContext } from 'react'
+import { SidebarStatusContext } from '../App'
 import styles from '../css_modules/Header.module.css'
 import burger from '../images/icons8-menu-24.png'
 import cancel from '../images/icons8-delete-24.png'
 import search from '../images/icons8-search-24.png'
 
-const Nav = ({ sidebarOpen, setSidebarOpen, searchOpen, setSearchOpen }) => {
+const Header = () => {
+  const { sidebarOpen, setSidebarOpen, searchOpen, setSearchOpen } =
+    useContext(SidebarStatusContext)
+
   return (
-    <header>
+    <header className={styles.banner}>
       <div className={styles.head_container}>
         <div
           className={`${styles.icon_container} ${
@@ -43,4 +48,4 @@ const Nav = ({ sidebarOpen, setSidebarOpen, searchOpen, setSearchOpen }) => {
   )
 }
 
-export default Nav
+export default Header
