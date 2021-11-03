@@ -6,37 +6,17 @@
 }
 
 .App {
-  width: 100vw;
-  /* height: 100vh; */
-  height: 100%;
-  /* background-color: rgb(228, 231, 235); */
+  margin: auto;
+  max-width: 1024px;
+  box-shadow: 0px 0px 10px 5px rgba(197, 197, 197, 0.644);
 }
 
 main {
   margin: auto;
-  max-width: 768px;
+  max-width: 1024px;
   min-height: 100vh;
-  max-height: 1000vh;
-}
-
-h3 > img {
-  height: 3rem;
-  width: 3rem;
-  border-radius: 50%;
-}
-
-.ReviewList,
-.UsersList,
-.FullReview,
-.UserProfile {
-  width: 100%;
-  min-height: 100%;
-  max-width: 768px;
-  margin: auto;
-  position: absolute;
-  top: 51px;
+  padding-top: 51px;
   background-color: #ebebe6;
-  box-shadow: 0px 0px 10px 5px rgba(197, 197, 197, 0.644);
 }
 
 .blur {
@@ -44,12 +24,11 @@ h3 > img {
   transition: filter 0.5s ease-in;
 }
 
-.FullReview > img {
-  width: 100%;
-  height: auto;
-  max-height: 450px;
-  object-fit: contain;
-}
+/* h3 > img {
+  height: 3rem;
+  width: 3rem;
+  border-radius: 50%;
+} */
 
 .UserProfile > h2 {
   padding: 1rem 0.5rem;
@@ -121,35 +100,13 @@ h3 > img {
   margin-bottom: 0.75rem;
 }
 
-.page,
 .no-results {
   text-align: center;
   padding-top: 1rem;
 }
 
-.page-button,
-.logout-button {
-  text-align: center;
-  margin-top: 1rem;
-  margin-bottom: 2rem;
-}
-
-.review_body {
-  width: 90%;
-  margin: auto;
-}
-
-.Login,
-.Register {
-  text-align: center;
-  position: absolute;
-  width: 100%;
-  max-width: 768px;
-  min-height: 92vh;
-  margin: auto;
-  top: 51px;
-  background-color: whitesmoke;
-  z-index: 0;
+.ReviewList {
+  padding-bottom: 1rem;
 }
 
 ul {
@@ -192,7 +149,7 @@ ul {
   font-family: inherit;
 }
 
-.show-hide-button, .review-form button {
+.show-hide-button, .review-form button, .account-button {
   margin-top: 0.8rem;
   width: 10rem;
   font-size: 0.875rem;
@@ -202,6 +159,15 @@ ul {
   color: whitesmoke;
   border: none;
   font-weight: 600;
+}
+
+.account-button-container {
+  display: flex;
+  justify-content: center;
+}
+
+.account-button {
+  width: 5rem;
 }
 
 .submit-container {
@@ -223,13 +189,12 @@ ul {
   color: transparent;
 }
 
+/* Review card section */
 .review_card {
   padding: 0.5rem;
   margin: 0.5rem;
   width: 360px;
-  /* width: 100%; */
   border-radius: 0.5rem;
-  /* background-color: rgb(228, 231, 235); */
   background-color: whitesmoke;
   display: grid;
   grid-template-columns: 100px auto;
@@ -239,8 +204,6 @@ ul {
 }
 
 .review_card:hover {
-  cursor: pointer;
-  box-shadow: 0 0 10px 2px red;
   transform: scale(1.02, 1.02);
 }
 
@@ -249,6 +212,10 @@ ul {
   width: 100px;
   height: 100px;
   object-fit: cover;
+}
+
+.review_card > img:hover {
+  cursor: pointer;
 }
 
 .title_category {
@@ -261,6 +228,12 @@ ul {
 
 .title_category > h4 {
   font-size: 14px;
+}
+
+.title_category > h4:hover {
+  cursor: pointer;
+  text-decoration: underline;
+  color: #eb1b24;
 }
 
 .title_category > p {
@@ -297,6 +270,12 @@ ul {
   align-items: center;
 }
 
+.avatar_username:hover {
+  cursor: pointer;
+  text-decoration: underline;
+  color: #eb1b24;
+}
+
 .votes_comments_count {
   display: flex;
   justify-content: center;
@@ -323,12 +302,9 @@ ul {
   border-radius: 50%;
   background-color: white;
 }
+/* Review card section ends */
 
-.comments {
-  display: block;
-  justify-content: left;
-}
-
+/* Profile card section */
 .profile__card {
   padding: 0.5rem;
   margin: 0.5rem;
@@ -336,8 +312,6 @@ ul {
   height: auto;
   border-radius: 0.5rem;
   background-color: whitesmoke;
-  /* border: 2px solid blue; */
-  /* text-align: center; */
   display: grid;
   grid-template-columns: 30% auto;
   box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.2);
@@ -364,15 +338,7 @@ ul {
   margin: 0.5rem;
   font-size: 14px;
 }
-
-.LikeButton {
-  background-color: transparent;
-  border: none;
-}
-
-.LikeButton:disabled {
-  color: initial;
-}
+/* Profile card sction ends */
 
 .error {
   color: red;
@@ -401,18 +367,7 @@ button:hover {
   body {
     background-image: url('./images/background.jpg');
     background-size: cover;
-    height: 100vh;
     background-attachment: fixed;
-  }
-
-  .Login,
-  .Register,
-  .ReviewList,
-  .UsersList,
-  .FullReview,
-  .UserProfile,
-  main {
-    max-width: 1024px;
   }
 
   .review_card {
