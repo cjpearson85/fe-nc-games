@@ -24,15 +24,10 @@ const ReviewList = () => {
   const [page, setPage] = useState(1)
   const { category } = useParams()
   const [queries, setQueries] = useState({ ...category })
-  const {
-    isLoading,
-    error,
-    reviews,
-    setReviews,
-    reviewTotal,
-    hasMore,
-    initialLoad,
-  } = useFetch(queries, page)
+  const { isLoading, reviews, reviewTotal, hasMore, initialLoad } = useFetch(
+    queries,
+    page
+  )
   const observer = useRef()
   const history = useHistory()
 
@@ -136,7 +131,6 @@ const ReviewList = () => {
               value={sortBy}
               onChange={({ target: { value } }) => {
                 setPage(1)
-                // setReviews([]);
                 setSortBy(value)
                 setQueries((currentQueries) => {
                   return { ...currentQueries, sort_by: value }
@@ -162,14 +156,6 @@ const ReviewList = () => {
             <img src={reset} alt="reset_icon" className="reset_icon" />
           </button>
         </div>
-        {/* <button
-            onClick={({ target: { value } }) => {
-              setOrder(value);
-            }}
-            value={order === "asc" ? "desc" : "asc"}
-          >
-            {order === "asc" ? "Desc" : "Asc"}
-          </button> */}
         {username && (
           <button
             className="show-hide-button"
@@ -203,10 +189,16 @@ const ReviewList = () => {
                 key={review_id}
                 ref={reviews.length === i + 1 ? lastReviewElementRef : null}
                 className="review_card"
-                onClick={() => routeChange({ value: review_id })}
               >
-                <img src={review_img_url} alt="" />
-                <div className="title_category">
+                <img
+                  src={review_img_url}
+                  alt=""
+                  onClick={() => routeChange({ value: review_id })}
+                />
+                <div
+                  className="title_category"
+                  onClick={() => routeChange({ value: review_id })}
+                >
                   <h4>{title}</h4>
                   <p>{`posted ${getTimeSince(created_at)}`}</p>
                   <p className="category_tag" value={category}>
@@ -214,7 +206,10 @@ const ReviewList = () => {
                   </p>
                 </div>
                 <div className="review-card__bottom-line">
-                  <div className="avatar_username">
+                  <div
+                    className="avatar_username"
+                    onClick={() => history.push(`/users/${owner}`)}
+                  >
                     <img className="small__avatar" src={avatar_url} alt="" />
                     <p>{owner}</p>
                   </div>
@@ -231,7 +226,7 @@ const ReviewList = () => {
         )}
       </ul>
       {!reviews.length && !isLoading && (
-        <p className="page">No results found</p>
+        <p className="no-results">No results found</p>
       )}
       {isLoading && <Loader size="small" />}
     </div>
