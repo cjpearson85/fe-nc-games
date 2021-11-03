@@ -1,15 +1,18 @@
 import { useHistory } from 'react-router-dom'
+import { useContext } from 'react'
+import { AppUserContext, SidebarStatusContext } from '../App'
+import styles from '../css_modules/Sidebar.module.css'
 
-const Sidebar = ({
-  loggedInAs: { username, name, avatar_url },
-  setLoggedInAs,
-  sidebarOpen,
-  setSidebarOpen,
-}) => {
+const Sidebar = () => {
+  const {
+    loggedInAs: { username, name, avatar_url },
+    setLoggedInAs,
+  } = useContext(AppUserContext)
+  const { sidebarOpen, setSidebarOpen } = useContext(SidebarStatusContext)
   const history = useHistory()
 
   return (
-    <nav className={`Sidebar ${sidebarOpen && 'showSidebar'}`}>
+    <nav className={`${styles.Sidebar} ${sidebarOpen ? styles.show : ''}`}>
       {!name ? (
         <>
           <img
