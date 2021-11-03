@@ -7,6 +7,13 @@
   margin-bottom: 0.5rem;
 }
 
+.image {
+  width: 100%;
+  height: auto;
+  max-height: 450px;
+  object-fit: contain;
+}
+
 .title, .date, .review_body, .comment_likes {
   margin-bottom: 0.75rem;
 }
@@ -14,6 +21,12 @@
 .avatar_handle {
   display: flex;
   align-items: center;
+}
+
+.avatar_handle:hover {
+  cursor: pointer;
+  text-decoration: underline;
+  color: #eb1b24;
 }
 
 .avatar_img {
@@ -70,6 +83,11 @@
 .send_button > img {
   position: relative;
   right: 1px;
+}
+
+.comments {
+  display: block;
+  justify-content: left;
 }
 
 .comment_card {
