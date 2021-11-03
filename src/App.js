@@ -24,7 +24,10 @@ function App() {
   const [searchOpen, setSearchOpen] = useState(false)
 
   document.addEventListener('click', (event) => {
-    if (event.target.closest('#navigation') === null) {
+    if (
+      event.target.closest('header') === null &&
+      event.target.closest('nav') === null
+    ) {
       setSidebarOpen(false)
     }
   })
@@ -35,10 +38,8 @@ function App() {
         <SidebarStatusContext.Provider
           value={{ sidebarOpen, setSidebarOpen, searchOpen, setSearchOpen }}
         >
-          <div id="navigation">
-            <Header />
-            <Sidebar />
-          </div>
+          <Header />
+          <Sidebar />
         </SidebarStatusContext.Provider>
         <main className={sidebarOpen && 'blur'}>
           <Switch>
@@ -52,8 +53,8 @@ function App() {
               <Register />
             </Route>
             {/* <Route exact path="/profile">
-            {loggedInAs.username ? <UserProfile loggedInAs={loggedInAs} setLoggedInAs={setLoggedInAs}/> : <Redirect to="/login"/>}
-          </Route> */}
+              {loggedInAs.username ? <UserProfile loggedInAs={loggedInAs} setLoggedInAs={setLoggedInAs}/> : <Redirect to="/login"/>}
+            </Route> */}
             <Route exact path="/users">
               <UsersList />
             </Route>
@@ -71,7 +72,6 @@ function App() {
             </Route>
           </Switch>
         </main>
-        {/* <footer /> */}
       </AppUserContext.Provider>
     </div>
   )
