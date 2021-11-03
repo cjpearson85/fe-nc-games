@@ -19,49 +19,6 @@ main {
   max-height: 1000vh;
 }
 
-.Sidebar a {
-  color: inherit;
-  text-decoration: none;
-}
-
-.Sidebar {
-  /* height: 92vh; */
-  position: fixed;
-  top: 51px;
-  z-index: 1;
-  background-color: #eb1b24;
-  color: whitesmoke;
-  box-shadow: 0px 0px 5px black;
-  border-right: 1px solid white;
-  transform: translateY(-120%);
-  transition: transform 0.5s ease-in;
-}
-
-.showSidebar {
-  transform: translateY(0);
-}
-
-.Sidebar > ul {
-  margin: 0;
-  display: block;
-}
-
-.Sidebar h3 {
-  padding: 1rem;
-  margin: 0;
-  border-bottom: 1px solid white;
-}
-
-.Sidebar li {
-  padding: 1rem;
-  border-bottom: 1px solid white;
-}
-
-.Sidebar img {
-  max-width: 150px;
-  height: auto;
-}
-
 h3 > img {
   height: 3rem;
   width: 3rem;
