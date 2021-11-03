@@ -15,7 +15,6 @@ const UserProfile = () => {
   const { username } = useParams()
   const history = useHistory()
 
-  //   const [userComments, setUserComments] = useState([]);
   useEffect(() => {
     setIsLoading(true)
     getUserByUsername(username).then((user) => {
@@ -62,6 +61,20 @@ const UserProfile = () => {
           <h4>Total likes: {user.total_likes ? user.total_likes : 0}</h4>
         </div>
       </div>
+      {myProfile() && (
+        <div className="account-button-container">
+          <button
+            className="account-button"
+            disabled={!myProfile()}
+            onClick={logOut}
+          >
+            Log out
+          </button>
+          {/* <button className="account-button" onClick={deleteAccount} disabled>
+            Delete account
+          </button> */}
+        </div>
+      )}
       <h2>
         {myProfile()
           ? `My Reviews (${reviewsTotal})`
@@ -123,8 +136,6 @@ const UserProfile = () => {
           }
         )}
       </ul>
-      {/* {myProfile() && <div className="logout-button"><button disabled={!myProfile()} onClick={logOut}>Log out</button></div>} */}
-      {/* <button onClick={deleteAccount}>Delete account</button> */}
     </div>
   )
 }
