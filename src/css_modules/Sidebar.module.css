@@ -10,7 +10,11 @@
   transition: transform 0.5s ease-in;
 }
 
-.Sidebar  ul {
+.Sidebar > div:hover {
+  cursor: pointer;
+}
+
+.Sidebar ul {
   margin: 0;
   display: block;
 }
@@ -24,6 +28,10 @@
 .Sidebar li {
   padding: 1rem;
   border-bottom: 1px solid white;
+}
+
+.Sidebar li:hover {
+  cursor: pointer;
 }
 
 .Sidebar img {

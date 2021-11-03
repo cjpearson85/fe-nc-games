@@ -14,13 +14,13 @@ const Sidebar = () => {
   return (
     <nav className={`${styles.Sidebar} ${sidebarOpen ? styles.show : ''}`}>
       {!name ? (
-        <>
+        <div>
           <img
             src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
             alt=""
           />
           <h3>Guest</h3>
-        </>
+        </div>
       ) : (
         <div
           onClick={() => {
