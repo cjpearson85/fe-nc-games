@@ -13,7 +13,7 @@ const Header = () => {
     <header className={styles.banner}>
       <div
         className={`${styles.icon_container} ${
-          sidebarOpen && styles.highlighted
+          sidebarOpen ? styles.highlighted : ''
         }`}
       >
         <img
@@ -29,7 +29,7 @@ const Header = () => {
       <h1 className={styles.title}>^NC games</h1>
       <div
         className={`${styles.icon_container} ${
-          searchOpen && styles.highlighted
+          searchOpen ? styles.highlighted : ''
         }`}
       >
         {/* <img

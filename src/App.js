@@ -41,7 +41,7 @@ function App() {
           <Header />
           <Sidebar />
         </SidebarStatusContext.Provider>
-        <main className={sidebarOpen && 'blur'}>
+        <main className={sidebarOpen ? 'blur' : ''}>
           <Switch>
             <Route exact path="/">
               <ReviewList />
