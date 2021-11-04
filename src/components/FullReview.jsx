@@ -55,7 +55,7 @@ const FullReview = () => {
   const deleteComment = ({ target: { value } }) => {
     deleteCommentById(value).then(() => {
       setComments((currentComments) => {
-        return currentComments.filter(({ comment_id }) => comment_id !== value)
+        return currentComments.filter(({ comment_id }) => comment_id !== +value)
       })
     })
   }
