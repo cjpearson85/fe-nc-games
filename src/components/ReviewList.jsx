@@ -1,5 +1,4 @@
-import { useCallback, useEffect, useRef, useState, useContext } from 'react'
-import { getCategories } from '../api'
+import { useCallback, useRef, useState, useContext } from 'react'
 import { AppUserContext } from '../App'
 import { useParams, useHistory, generatePath } from 'react-router-dom'
 import {
@@ -17,17 +16,14 @@ const ReviewList = () => {
   const {
     loggedInAs: { username },
   } = useContext(AppUserContext)
-  const [categories, setCategories] = useState([])
   const [sortBy, setSortBy] = useState('created_at')
   const [searchInput, setSearchInput] = useState('')
   const [showReviewForm, setShowReviewForm] = useState(false)
   const [page, setPage] = useState(1)
   const { category } = useParams()
   const [queries, setQueries] = useState({ ...category })
-  const { isLoading, reviews, reviewTotal, hasMore, initialLoad } = useFetch(
-    queries,
-    page
-  )
+  const { isLoading, reviews, categories, reviewTotal, hasMore, initialLoad } =
+    useFetch(queries, page)
   const observer = useRef()
   const history = useHistory()
 
@@ -51,12 +47,6 @@ const ReviewList = () => {
     }
     history.push(path)
   }
-
-  useEffect(() => {
-    getCategories().then((categories) => {
-      setCategories(categories)
-    })
-  }, [])
 
   const lastReviewElementRef = useCallback(
     (node) => {
