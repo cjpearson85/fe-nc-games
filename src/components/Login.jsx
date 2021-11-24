@@ -1,20 +1,22 @@
 import { useState, useContext } from 'react'
 import { Link, useHistory } from 'react-router-dom'
-import { getUserByUsername } from '../api'
+import { loginUser } from '../api'
 import { AppUserContext } from '../App'
 
 const Login = () => {
   const { setLoggedInAs } = useContext(AppUserContext)
   const [usernameInput, setUsernameInput] = useState('')
+  const [passwordInput, setPasswordInput] = useState('')
   const [userNotFound, setUserNotFound] = useState(false)
   const history = useHistory()
 
-  const checkUsername = (event) => {
+  const attemptLogin = (event) => {
     event.preventDefault()
-    getUserByUsername(usernameInput)
+    localStorage.clear()
+    loginUser({ username: usernameInput, password: passwordInput })
       .then((user) => {
         setLoggedInAs(user)
-        history.push(`/users/${user.username}`)
+        history.push('/')
       })
       .catch(() => {
         setUserNotFound(true)
@@ -24,16 +26,29 @@ const Login = () => {
   return (
     <div className="Login">
       <h2>Log In</h2>
-      <form onSubmit={checkUsername}>
+      <form onSubmit={attemptLogin}>
         <label>
           Username:{' '}
           <input
             type="text"
+            required
+            value={usernameInput}
             onChange={({ target: { value } }) => setUsernameInput(value)}
           />
         </label>
+        <label>
+          Password:{' '}
+          <input
+            type="password"
+            required
+            value={passwordInput}
+            onChange={({ target: { value } }) => setPasswordInput(value)}
+          />
+        </label>
         <button type="submit">Submit</button>
-        {userNotFound ? <p className="error">User not found</p> : null}
+        {userNotFound ? (
+          <p className="error">Username or password incorrect</p>
+        ) : null}
       </form>
       <p>
         Don't have an account? Click here to{' '}

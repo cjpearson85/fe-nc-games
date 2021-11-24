@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react'
+import { createContext, useEffect, useState } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import './App.css'
 import Sidebar from './components/Sidebar'
@@ -14,14 +14,14 @@ export const SidebarStatusContext = createContext()
 export const AppUserContext = createContext()
 
 function App() {
-  const [loggedInAs, setLoggedInAs] = useState({
-    username: 'jessjelly',
-    name: 'Jess Jelly',
-    avatar_url:
-      'https://s-media-cache-ak0.pinimg.com/564x/39/62/ec/3962eca164e60cf46f979c1f57d4078b.jpg',
-  })
+  const [loggedInAs, setLoggedInAs] = useState({})
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
+
+  useEffect(() => {
+    const user = localStorage.getItem('user')
+    user && setLoggedInAs(JSON.parse(user))
+  }, [])
 
   document.addEventListener('click', (event) => {
     if (
@@ -47,10 +47,10 @@ function App() {
               <ReviewList />
             </Route>
             <Route exact path="/login">
-              <Login />
+              {!loggedInAs.username ? <Login /> : <Redirect to="/" />}
             </Route>
             <Route exact path="/register">
-              <Register />
+              {!loggedInAs.username ? <Register /> : <Redirect to="/" />}
             </Route>
             {/* <Route exact path="/profile">
               {loggedInAs.username ? <UserProfile loggedInAs={loggedInAs} setLoggedInAs={setLoggedInAs}/> : <Redirect to="/login"/>}

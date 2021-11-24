@@ -46,6 +46,7 @@ const UserProfile = () => {
 
   const logOut = () => {
     setLoggedInAs({})
+    localStorage.clear()
     history.push('/')
   }
 
