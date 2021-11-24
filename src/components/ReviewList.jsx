@@ -8,22 +8,29 @@ import {
 } from '../utils/helper-functions'
 import PostReview from './PostReview'
 import Loader from './Loader'
-import useFetch from '../hooks/useFetch'
+import useReviews from '../hooks/useReviews'
 import search from '../images/icons8-search-24.png'
 import reset from '../images/icons8-refresh-24.png'
+import useCategories from '../hooks/useCategories'
 
 const ReviewList = () => {
   const {
     loggedInAs: { username },
   } = useContext(AppUserContext)
+  const { category } = useParams()
+
   const [sortBy, setSortBy] = useState('created_at')
   const [searchInput, setSearchInput] = useState('')
   const [showReviewForm, setShowReviewForm] = useState(false)
   const [page, setPage] = useState(1)
-  const { category } = useParams()
   const [queries, setQueries] = useState({ ...category })
-  const { isLoading, reviews, categories, reviewTotal, hasMore, initialLoad } =
-    useFetch(queries, page)
+
+  const { categoriesLoaded, categories } = useCategories()
+  const { reviewsLoaded, reviews, reviewTotal, hasMore } = useReviews(
+    queries,
+    page
+  )
+
   const observer = useRef()
   const history = useHistory()
 
@@ -50,7 +57,7 @@ const ReviewList = () => {
 
   const lastReviewElementRef = useCallback(
     (node) => {
-      if (isLoading) return
+      if (!reviewsLoaded) return
       if (observer.current) observer.current.disconnect()
       observer.current = new IntersectionObserver((entries) => {
         if (entries[0].isIntersecting && hasMore) {
@@ -59,12 +66,12 @@ const ReviewList = () => {
       })
       if (node) observer.current.observe(node)
     },
-    [isLoading, hasMore]
+    [reviewsLoaded, hasMore]
   )
 
   const categoryLookup = createRef(categories, 'slug', 'description')
 
-  if (initialLoad) return <Loader />
+  if (!categoriesLoaded && !reviewsLoaded) return <Loader />
   return (
     <div className="ReviewList">
       <div className="review-options">
@@ -215,10 +222,10 @@ const ReviewList = () => {
           }
         )}
       </ul>
-      {!reviews.length && !isLoading && (
+      {!reviews.length && reviewsLoaded && (
         <p className="no-results">No results found</p>
       )}
-      {isLoading && <Loader size="small" />}
+      {!reviewsLoaded && <Loader size="small" />}
     </div>
   )
 }
