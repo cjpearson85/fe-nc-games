@@ -23,15 +23,6 @@ function App() {
     user && setLoggedInAs(JSON.parse(user))
   }, [])
 
-  document.addEventListener('click', (event) => {
-    if (
-      event.target.closest('header') === null &&
-      event.target.closest('nav') === null
-    ) {
-      setSidebarOpen(false)
-    }
-  })
-
   return (
     <div className="App">
       <AppUserContext.Provider value={{ loggedInAs, setLoggedInAs }}>
@@ -41,7 +32,10 @@ function App() {
           <Header />
           <Sidebar />
         </SidebarStatusContext.Provider>
-        <main className={sidebarOpen ? 'blur' : ''}>
+        <main
+          className={sidebarOpen ? 'blur' : ''}
+          onClick={() => setSidebarOpen(false)}
+        >
           <Switch>
             <Route exact path="/">
               <ReviewList />
