@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react'
 import { getReviews } from '../api'
 
-function useFetch(queries, page) {
-  const [isLoading, setIsLoading] = useState(true)
-  const [initialLoad, setInitialLoad] = useState(true)
-  const [error, setError] = useState(false)
+function useReviews(queries, page) {
+  const [reviewsLoaded, setReviewsLoaded] = useState(false)
   const [reviews, setReviews] = useState([])
   const [reviewTotal, setReviewTotal] = useState(0)
   const [hasMore, setHasMore] = useState(false)
@@ -14,29 +12,22 @@ function useFetch(queries, page) {
   }, [queries])
 
   useEffect(() => {
-    setIsLoading(true)
-    setError(false)
+    setReviewsLoaded(false)
 
     getReviews({ ...queries, p: page }).then(({ reviews, total_count }) => {
       setReviewTotal(total_count)
-      setReviews((currentReviews) => [
-        ...new Set([...currentReviews, ...reviews]),
-      ])
+      setReviews((currentReviews) => [...currentReviews, ...reviews])
       setHasMore(reviews.length > 0)
-      setInitialLoad(false)
-      setIsLoading(false)
+      setReviewsLoaded(true)
     })
   }, [queries, page])
 
   return {
-    isLoading,
-    error,
+    reviewsLoaded,
     reviews,
-    setReviews,
     reviewTotal,
     hasMore,
-    initialLoad,
   }
 }
 
-export default useFetch
+export default useReviews

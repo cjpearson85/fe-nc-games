@@ -63,6 +63,7 @@ const Sidebar = () => {
             onClick={() => {
               setSidebarOpen(false)
               setLoggedInAs({})
+              localStorage.clear()
               history.push('/')
             }}
           >

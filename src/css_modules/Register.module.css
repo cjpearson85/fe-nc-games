@@ -1,0 +1,35 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: whitesmoke;
+  min-height: calc(100vh - 51px);
+}
+
+.heading {
+  position: relative;
+  top: 0.75rem;
+  padding: 0 0.75rem;
+  color: #eb1b24;
+  background-color: whitesmoke;
+}
+
+.container {
+  width: 343px;
+  padding: 1.25rem 1rem 2.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 2px solid #eb1b24;
+  border-radius: 10px;
+}
+
+.checkbox {
+  margin-bottom: 1.25rem;
+}
+
+@media screen and (min-width: 600px) {
+  .container {
+    width: 450px;
+  }
+}
