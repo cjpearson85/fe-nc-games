@@ -9,18 +9,23 @@ import {
 import { AppUserContext } from '../App'
 import { getTimeSince } from '../utils/helper-functions'
 import LikeButton from './LikeButton'
-import styles from '../css_modules/FullReview.module.css'
+import LoginPopup from './LoginPopup'
 import Loader from './Loader'
+import useToggle from '../hooks/useToggle'
+import styles from '../css_modules/FullReview.module.css'
 import postIcon from '../images/icons8-email-send-24.png'
 
 const FullReview = () => {
   const {
     loggedInAs: { username },
   } = useContext(AppUserContext)
+
   const [review, setReview] = useState({})
   const [comments, setComments] = useState([])
   const [commentInput, setCommentInput] = useState('')
   const [isLoading, setIsLoading] = useState(true)
+  const [showLoginPrompt, toggleLoginPrompt] = useToggle()
+
   const { review_id } = useParams()
   const history = useHistory()
 
@@ -42,14 +47,18 @@ const FullReview = () => {
     })
   }, [review_id])
 
-  const postComment = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault()
-    postCommentToReview(review_id, username, commentInput).then((comment) => {
-      setCommentInput('')
-      setComments((currentComments) => {
-        return [comment, ...currentComments]
+    if (username) {
+      postCommentToReview(review_id, username, commentInput).then((comment) => {
+        setCommentInput('')
+        setComments((currentComments) => {
+          return [comment, ...currentComments]
+        })
       })
-    })
+    } else {
+      toggleLoginPrompt()
+    }
   }
 
   const deleteComment = ({ target: { value } }) => {
@@ -79,30 +88,30 @@ const FullReview = () => {
         <p className={styles.review_body}>{review.review_body}</p>
         <h4 className={styles.likes}>
           {review.votes} {review.votes === 1 ? 'like' : 'likes'}{' '}
-          <LikeButton setReview={setReview} review_id={review_id} />
+          <LikeButton
+            setReview={setReview}
+            review_id={review_id}
+            toggleLoginPrompt={toggleLoginPrompt}
+            username={username}
+          />
         </h4>
       </div>
       <h4 className={styles.comment_header}>Comments ({comments.length})</h4>
       <div className={styles.comment_container}>
-        {username && (
-          <form
-            className={styles.comment_input}
-            onSubmit={(event) => postComment(event)}
-          >
-            <input
-              className={styles.text_field}
-              required
-              type="text"
-              maxLength="140"
-              placeholder="Add a comment"
-              value={commentInput}
-              onChange={({ target: { value } }) => setCommentInput(value)}
-            />
-            <button className={styles.send_button}>
-              <img src={postIcon} alt="" />
-            </button>
-          </form>
-        )}
+        <form className={styles.comment_input} onSubmit={handleSubmit}>
+          <input
+            className={styles.text_field}
+            required
+            type="text"
+            maxLength="140"
+            placeholder="Add a comment"
+            value={commentInput}
+            onChange={({ target: { value } }) => setCommentInput(value)}
+          />
+          <button className={styles.send_button}>
+            <img src={postIcon} alt="" />
+          </button>
+        </form>
         <ul className={styles.comments}>
           {comments.map(({ comment_id, author, body, votes, created_at }) => {
             return (
@@ -130,6 +139,8 @@ const FullReview = () => {
                   <LikeButton
                     setComments={setComments}
                     comment_id={comment_id}
+                    toggleLoginPrompt={toggleLoginPrompt}
+                    username={username}
                   />
                 </h4>
                 <p>{body}</p>
@@ -138,6 +149,12 @@ const FullReview = () => {
           })}
         </ul>
       </div>
+      {showLoginPrompt && (
+        <LoginPopup
+          showLoginPrompt={showLoginPrompt}
+          toggleLoginPrompt={toggleLoginPrompt}
+        />
+      )}
     </div>
   )
 }
