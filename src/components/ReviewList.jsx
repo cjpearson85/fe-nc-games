@@ -8,10 +8,12 @@ import {
 } from '../utils/helper-functions'
 import PostReview from './PostReview'
 import Loader from './Loader'
+import LoginPopup from './LoginPopup'
 import useReviews from '../hooks/useReviews'
 import search from '../images/icons8-search-24.png'
 import reset from '../images/icons8-refresh-24.png'
 import useCategories from '../hooks/useCategories'
+import useToggle from '../hooks/useToggle'
 
 const ReviewList = () => {
   const {
@@ -21,9 +23,11 @@ const ReviewList = () => {
 
   const [sortBy, setSortBy] = useState('created_at')
   const [searchInput, setSearchInput] = useState('')
-  const [showReviewForm, setShowReviewForm] = useState(false)
   const [page, setPage] = useState(1)
   const [queries, setQueries] = useState({ ...category })
+
+  const [showReviewForm, toggleReviewForm] = useToggle()
+  const [showLoginPrompt, toggleLoginPrompt] = useToggle()
 
   const { categoriesLoaded, categories } = useCategories()
   const { reviewsLoaded, reviews, reviewTotal, hasMore } = useReviews(
@@ -153,17 +157,18 @@ const ReviewList = () => {
             <img src={reset} alt="reset_icon" className="reset_icon" />
           </button>
         </div>
-        {username && (
-          <button
-            className="show-hide-button"
-            onClick={() => setShowReviewForm((curr) => !curr)}
-          >
-            {showReviewForm ? 'Hide form' : '+ Post new review'}
-          </button>
-        )}
-        {showReviewForm && (
-          <PostReview categories={categories} username={username} />
-        )}
+        <button
+          className="show-hide-button"
+          onClick={username ? toggleReviewForm : toggleLoginPrompt}
+        >
+          + Post new review
+        </button>
+        <PostReview
+          categories={categories}
+          username={username}
+          showReviewForm={showReviewForm}
+          toggleReviewForm={toggleReviewForm}
+        />
       </div>
       <ul>
         {reviews.map(
@@ -226,6 +231,12 @@ const ReviewList = () => {
         <p className="no-results">No results found</p>
       )}
       {!reviewsLoaded && <Loader size="small" />}
+      {showLoginPrompt && (
+        <LoginPopup
+          showLoginPrompt={showLoginPrompt}
+          toggleLoginPrompt={toggleLoginPrompt}
+        />
+      )}
     </div>
   )
 }

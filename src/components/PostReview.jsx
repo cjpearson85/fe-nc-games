@@ -1,109 +1,151 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useHistory } from 'react-router-dom'
 import { postReview } from '../api'
 import { prettifyText } from '../utils/helper-functions'
+import {
+  TextField,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  MenuItem,
+  FormControl,
+} from '@mui/material'
 
-const PostReview = ({ categories, username }) => {
-  const [categoryInput, setCategoryInput] = useState('')
-  const [titleInput, setTitleInput] = useState('')
-  const [imageInput, setImageInput] = useState('')
-  const [bodyInput, setBodyInput] = useState('')
-  const [error, setError] = useState(false)
+const PostReview = ({
+  categories,
+  username,
+  showReviewForm,
+  toggleReviewForm,
+}) => {
+  const [inputs, setInputs] = useState({
+    category: '',
+    title: '',
+    review_img_url: '',
+    review_body: '',
+  })
+
+  console.log(inputs)
+
+  // const [error, setError] = useState(false)
   const history = useHistory()
 
-  const createReview = (event) => {
-    event.preventDefault()
+  const handleClose = () => {
+    toggleReviewForm()
+    setInputs({
+      category: '',
+      title: '',
+      review_img_url: '',
+      review_body: '',
+    })
+  }
 
-    let review_img_url
-    imageInput === ''
-      ? (review_img_url =
-          'https://images.pexels.com/photos/163064/play-stone-network-networked-interactive-163064.jpeg')
-      : (review_img_url = imageInput)
+  const handleChange = ({ target: { name, value } }) => {
+    setInputs((values) => ({ ...values, [name]: value }))
+  }
+
+  const formValid = useMemo(() => {
+    return [inputs.title, inputs.category, inputs.review_body].every(
+      (input) => input !== ''
+    )
+  }, [inputs.title, inputs.category, inputs.review_body])
+
+  const createReview = () => {
+    if (inputs.review_img_url === '')
+      inputs.review_img_url =
+        'https://images.pexels.com/photos/163064/play-stone-network-networked-interactive-163064.jpeg'
 
     const newReview = {
+      ...inputs,
       owner: username,
-      title: titleInput,
-      review_img_url,
-      review_body: bodyInput,
       designer: 'Uncredited',
-      category: categoryInput,
     }
 
     postReview(newReview)
       .then(({ review_id }) => {
-        setError(false)
+        // setError(false)
         history.push(`/reviews/${review_id}`)
       })
       .catch(() => {
-        setError(true)
+        // setError(true)
       })
   }
 
   return (
-    <div className="review-form-container">
-      <h3>Submit a review</h3>
-      <form className="review-form" onSubmit={(event) => createReview(event)}>
-        <label for="category-input">Category</label>
-        <select
-          id="category-input"
-          className="input-field"
-          required
-          defaultValue=""
-          onChange={({ target: { value } }) => setCategoryInput(value)}
-        >
-          <option disabled value="">
-            Pick a category
-          </option>
-          {categories.map(({ slug }) => {
-            return (
-              <option key={slug} value={slug}>
-                {prettifyText(slug)}
-              </option>
-            )
-          })}
-        </select>
-        <br />
-        <label for="title-input">Title</label>
-        <input
-          required
-          id="title-input"
-          className="input-field"
-          type="text"
-          maxLength="140"
-          placeholder="Add a title"
-          value={titleInput}
-          onChange={({ target: { value } }) => setTitleInput(value)}
-        />
-        <br />
-        <label for="image-input">Image URL</label>
-        <input
-          id="image-input"
-          className="input-field"
-          type="url"
-          maxLength="140"
-          placeholder="Add an image link"
-          value={imageInput}
-          onChange={({ target: { value } }) => setImageInput(value)}
-        />
-        <br />
-        <label for="body-input">Review body</label>
-        <textarea
-          required
-          className="input-field"
-          id="body-input"
-          cols="30"
-          rows="10"
-          maxLength="500"
-          placeholder="Add review text"
-          value={bodyInput}
-          onChange={({ target: { value } }) => setBodyInput(value)}
-        />
-        <div className="submit-container">
-          <button>Submit</button>
-        </div>
-      </form>
-      {error && <p className="error">Oops! Something went wrong.</p>}
-    </div>
+    <Dialog open={showReviewForm} onClose={handleClose} fullWidth>
+      <DialogTitle>Submit a review</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          Contribute to our ever-growing community today!
+        </DialogContentText>
+        <FormControl fullWidth margin="normal">
+          <TextField
+            select
+            color="secondary"
+            label="Category"
+            name="category"
+            value={inputs.category}
+            onChange={handleChange}
+            margin="dense"
+            required
+          >
+            {categories.map(({ slug }) => {
+              return (
+                <MenuItem key={slug} value={slug}>
+                  {prettifyText(slug)}
+                </MenuItem>
+              )
+            })}
+          </TextField>
+          <TextField
+            color="secondary"
+            label="Title"
+            variant="outlined"
+            type="text"
+            name="title"
+            value={inputs.title}
+            onChange={handleChange}
+            required
+            margin="dense"
+          />
+          <TextField
+            color="secondary"
+            label="Image URL"
+            variant="outlined"
+            type="text"
+            name="review_img_url"
+            value={inputs.review_img_url}
+            onChange={handleChange}
+            margin="dense"
+          />
+          <TextField
+            multiline
+            minRows={4}
+            color="secondary"
+            label="Body"
+            variant="outlined"
+            type="text"
+            name="review_body"
+            value={inputs.review_body}
+            onChange={handleChange}
+            margin="dense"
+            required
+          />
+        </FormControl>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button
+            disabled={!formValid}
+            onClick={createReview}
+            variant="contained"
+          >
+            Submit
+          </Button>
+        </DialogActions>
+      </DialogContent>
+    </Dialog>
   )
 }
 
