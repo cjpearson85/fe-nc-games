@@ -38,6 +38,7 @@ const Login = () => {
       <form className={styles.container}>
         <TextField
           fullWidth
+          color="secondary"
           error={userNotFound}
           label="Username"
           variant="outlined"
@@ -49,6 +50,7 @@ const Login = () => {
         />
         <TextField
           fullWidth
+          color="secondary"
           error={userNotFound}
           label="Password"
           variant="outlined"

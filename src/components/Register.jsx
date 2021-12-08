@@ -120,7 +120,7 @@ const Register = () => {
           variant="outlined"
           type="text"
           name="username"
-          color={usernameValid && usernameAvailable ? 'success' : ''}
+          color={usernameValid && usernameAvailable ? 'success' : 'secondary'}
           helperText={
             inputs.username === ''
               ? ' '
@@ -145,7 +145,7 @@ const Register = () => {
           variant="outlined"
           type="text"
           name="name"
-          color={nameValid ? 'success' : ''}
+          color={nameValid ? 'success' : 'secondary'}
           helperText={
             !nameValid && inputs.name !== '' ? 'Please enter your name' : ' '
           }
@@ -161,7 +161,7 @@ const Register = () => {
           variant="outlined"
           type="password"
           name="password"
-          color={passwordValid ? 'success' : ''}
+          color={passwordValid ? 'success' : 'secondary'}
           helperText={
             inputs.password === ''
               ? ' '
@@ -191,7 +191,7 @@ const Register = () => {
           variant="outlined"
           type="password"
           name="confirm_password"
-          color={passwordConfirmValid ? 'success' : ''}
+          color={passwordConfirmValid ? 'success' : 'secondary'}
           helperText={
             inputs.confirm_password === ''
               ? ' '
@@ -213,7 +213,7 @@ const Register = () => {
           variant="outlined"
           type="url"
           name="avatar_url"
-          color={avatarValid ? 'success' : ''}
+          color={avatarValid ? 'success' : 'secondary'}
           helperText={
             !avatarValid ? 'Please enter a valid URL or leave blank.' : ' '
           }

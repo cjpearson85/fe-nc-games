@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
 import './App.css'
 import Sidebar from './components/Sidebar'
 import FullReview from './components/FullReview'
@@ -13,6 +14,17 @@ import UsersList from './components/UsersList'
 export const SidebarStatusContext = createContext()
 export const AppUserContext = createContext()
 
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#eb1b24',
+    },
+    secondary: {
+      main: '#121212',
+    },
+  },
+})
+
 function App() {
   const [loggedInAs, setLoggedInAs] = useState({})
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -25,48 +37,50 @@ function App() {
 
   return (
     <div className="App">
-      <AppUserContext.Provider value={{ loggedInAs, setLoggedInAs }}>
-        <SidebarStatusContext.Provider
-          value={{ sidebarOpen, setSidebarOpen, searchOpen, setSearchOpen }}
-        >
-          <Header />
-          <Sidebar />
-        </SidebarStatusContext.Provider>
-        <main
-          className={sidebarOpen ? 'blur' : ''}
-          onClick={() => setSidebarOpen(false)}
-        >
-          <Switch>
-            <Route exact path="/">
-              <ReviewList />
-            </Route>
-            <Route exact path="/login">
-              {!loggedInAs.username ? <Login /> : <Redirect to="/" />}
-            </Route>
-            <Route exact path="/register">
-              {!loggedInAs.username ? <Register /> : <Redirect to="/" />}
-            </Route>
-            {/* <Route exact path="/profile">
+      <ThemeProvider theme={theme}>
+        <AppUserContext.Provider value={{ loggedInAs, setLoggedInAs }}>
+          <SidebarStatusContext.Provider
+            value={{ sidebarOpen, setSidebarOpen, searchOpen, setSearchOpen }}
+          >
+            <Header />
+            <Sidebar />
+          </SidebarStatusContext.Provider>
+          <main
+            className={sidebarOpen ? 'blur' : ''}
+            onClick={() => setSidebarOpen(false)}
+          >
+            <Switch>
+              <Route exact path="/">
+                <ReviewList />
+              </Route>
+              <Route exact path="/login">
+                {!loggedInAs.username ? <Login /> : <Redirect to="/" />}
+              </Route>
+              <Route exact path="/register">
+                {!loggedInAs.username ? <Register /> : <Redirect to="/" />}
+              </Route>
+              {/* <Route exact path="/profile">
               {loggedInAs.username ? <UserProfile loggedInAs={loggedInAs} setLoggedInAs={setLoggedInAs}/> : <Redirect to="/login"/>}
             </Route> */}
-            <Route exact path="/users">
-              <UsersList />
-            </Route>
-            <Route exact path="/users/:username">
-              <UserProfile />
-            </Route>
-            <Route exact path="/categories/:category">
-              <ReviewList />
-            </Route>
-            <Route exact path="/reviews/:review_id">
-              <FullReview />
-            </Route>
-            <Route path="/">
-              <Redirect to="/" />
-            </Route>
-          </Switch>
-        </main>
-      </AppUserContext.Provider>
+              <Route exact path="/users">
+                <UsersList />
+              </Route>
+              <Route exact path="/users/:username">
+                <UserProfile />
+              </Route>
+              <Route exact path="/categories/:category">
+                <ReviewList />
+              </Route>
+              <Route exact path="/reviews/:review_id">
+                <FullReview />
+              </Route>
+              <Route path="/">
+                <Redirect to="/" />
+              </Route>
+            </Switch>
+          </main>
+        </AppUserContext.Provider>
+      </ThemeProvider>
     </div>
   )
 }
